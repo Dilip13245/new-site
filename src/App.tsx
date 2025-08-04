@@ -96,58 +96,221 @@ const fallbackRestaurantInfo: RestaurantInfo = {
   address: "Gujarat High Court, Vishwas City 1, Sola, Ahmedabad"
 };
 
-// Fallback menu data
+// Real menu data
 const fallbackMenu: MenuCategory[] = [
   {
-    id: "appetizers",
-    name: "Appetizers",
+    id: "starters",
+    name: "Starters & Appetizers",
     icon: "🥗",
     items: [
       {
         id: "1",
-        name: "Caesar Salad",
-        price: "₹299",
-        description: "Fresh romaine lettuce with caesar dressing",
+        name: "Paneer Tikka",
+        price: "₹280",
+        description: "Marinated cottage cheese cubes grilled to perfection with bell peppers and onions",
         isVeg: true,
         isPopular: true,
         rating: 4.5,
-        prepTime: "10 mins"
+        prepTime: "15 mins"
       },
       {
         id: "2",
-        name: "Chicken Wings",
-        price: "₹399",
-        description: "Spicy buffalo wings with ranch dip",
+        name: "Chicken Tikka",
+        price: "₹320",
+        description: "Tender chicken pieces marinated in yogurt and spices, grilled in tandoor",
         isVeg: false,
+        isPopular: true,
+        rating: 4.7,
+        prepTime: "18 mins"
+      },
+      {
+        id: "3",
+        name: "Veg Spring Rolls",
+        price: "₹180",
+        description: "Crispy rolls filled with fresh vegetables and served with sweet chili sauce",
+        isVeg: true,
+        rating: 4.2,
+        prepTime: "12 mins"
+      },
+      {
+        id: "4",
+        name: "Fish Amritsari",
+        price: "₹380",
+        description: "Batter fried fish pieces with traditional Punjabi spices",
+        isVeg: false,
+        rating: 4.4,
+        prepTime: "20 mins"
+      },
+      {
+        id: "5",
+        name: "Mushroom 65",
+        price: "₹240",
+        description: "Spicy and tangy mushroom appetizer with curry leaves and green chilies",
+        isVeg: true,
         rating: 4.3,
-        prepTime: "15 mins"
+        prepTime: "14 mins"
       }
     ]
   },
   {
     id: "mains",
     name: "Main Course",
-    icon: "🍽️",
+    icon: "🍛",
     items: [
       {
-        id: "3",
-        name: "Grilled Chicken",
-        price: "₹599",
-        originalPrice: "₹699",
-        description: "Perfectly grilled chicken with herbs",
+        id: "6",
+        name: "Butter Chicken",
+        price: "₹420",
+        description: "Tender chicken in rich tomato and butter gravy with aromatic spices",
         isVeg: false,
         isPopular: true,
-        rating: 4.7,
+        rating: 4.8,
         prepTime: "25 mins"
       },
       {
-        id: "4",
-        name: "Vegetable Pasta",
-        price: "₹449",
-        description: "Fresh pasta with seasonal vegetables",
+        id: "7",
+        name: "Paneer Butter Masala",
+        price: "₹360",
+        description: "Cottage cheese cubes in creamy tomato-based gravy with butter and cream",
+        isVeg: true,
+        isPopular: true,
+        rating: 4.6,
+        prepTime: "20 mins"
+      },
+      {
+        id: "8",
+        name: "Dal Makhani",
+        price: "₹280",
+        description: "Slow-cooked black lentils with butter, cream and aromatic spices",
+        isVeg: true,
+        rating: 4.5,
+        prepTime: "30 mins"
+      },
+      {
+        id: "9",
+        name: "Chicken Biryani",
+        price: "₹450",
+        originalPrice: "₹520",
+        description: "Fragrant basmati rice layered with spiced chicken and cooked in dum style",
+        isVeg: false,
+        isPopular: true,
+        rating: 4.7,
+        prepTime: "35 mins"
+      },
+      {
+        id: "10",
+        name: "Veg Biryani",
+        price: "₹380",
+        description: "Aromatic basmati rice with mixed vegetables and traditional spices",
+        isVeg: true,
+        rating: 4.4,
+        prepTime: "30 mins"
+      },
+      {
+        id: "11",
+        name: "Mutton Rogan Josh",
+        price: "₹520",
+        description: "Tender mutton pieces in rich Kashmiri-style curry with yogurt and spices",
+        isVeg: false,
+        rating: 4.6,
+        prepTime: "40 mins"
+      }
+    ]
+  },
+  {
+    id: "breads",
+    name: "Breads & Rice",
+    icon: "🍞",
+    items: [
+      {
+        id: "12",
+        name: "Butter Naan",
+        price: "₹60",
+        description: "Soft leavened bread brushed with butter and baked in tandoor",
+        isVeg: true,
+        rating: 4.5,
+        prepTime: "8 mins"
+      },
+      {
+        id: "13",
+        name: "Garlic Naan",
+        price: "₹80",
+        description: "Naan bread topped with fresh garlic and coriander",
+        isVeg: true,
+        isPopular: true,
+        rating: 4.6,
+        prepTime: "10 mins"
+      },
+      {
+        id: "14",
+        name: "Tandoori Roti",
+        price: "₹40",
+        description: "Whole wheat bread cooked in tandoor oven",
+        isVeg: true,
+        rating: 4.3,
+        prepTime: "6 mins"
+      },
+      {
+        id: "15",
+        name: "Jeera Rice",
+        price: "₹180",
+        description: "Basmati rice tempered with cumin seeds and whole spices",
         isVeg: true,
         rating: 4.2,
+        prepTime: "15 mins"
+      },
+      {
+        id: "16",
+        name: "Kashmiri Pulao",
+        price: "₹220",
+        description: "Fragrant rice with dry fruits, nuts and saffron",
+        isVeg: true,
+        rating: 4.4,
         prepTime: "20 mins"
+      }
+    ]
+  },
+  {
+    id: "beverages",
+    name: "Beverages",
+    icon: "🥤",
+    items: [
+      {
+        id: "17",
+        name: "Fresh Lime Soda",
+        price: "₹80",
+        description: "Refreshing lime juice with soda water and mint",
+        isVeg: true,
+        rating: 4.3,
+        prepTime: "5 mins"
+      },
+      {
+        id: "18",
+        name: "Mango Lassi",
+        price: "₹120",
+        description: "Creamy yogurt drink blended with fresh mango pulp",
+        isVeg: true,
+        isPopular: true,
+        rating: 4.6,
+        prepTime: "5 mins"
+      },
+      {
+        id: "19",
+        name: "Masala Chai",
+        price: "₹40",
+        description: "Traditional Indian tea brewed with aromatic spices",
+        isVeg: true,
+        rating: 4.4,
+        prepTime: "8 mins"
+      },
+      {
+        id: "20",
+        name: "Fresh Coconut Water",
+        price: "₹60",
+        description: "Natural tender coconut water served fresh",
+        isVeg: true,
+        rating: 4.2,
+        prepTime: "2 mins"
       }
     ]
   },
@@ -157,13 +320,42 @@ const fallbackMenu: MenuCategory[] = [
     icon: "🍰",
     items: [
       {
-        id: "5",
-        name: "Chocolate Cake",
-        price: "₹249",
-        description: "Rich chocolate cake with cream",
+        id: "21",
+        name: "Gulab Jamun",
+        price: "₹120",
+        description: "Soft milk dumplings soaked in rose-flavored sugar syrup",
+        isVeg: true,
+        isPopular: true,
+        rating: 4.7,
+        prepTime: "5 mins"
+      },
+      {
+        id: "22",
+        name: "Ras Malai",
+        price: "₹140",
+        description: "Cottage cheese dumplings in sweetened milk with cardamom and pistachios",
+        isVeg: true,
+        rating: 4.5,
+        prepTime: "5 mins"
+      },
+      {
+        id: "23",
+        name: "Kulfi",
+        price: "₹100",
+        description: "Traditional Indian ice cream with cardamom and pistachios",
+        isVeg: true,
+        rating: 4.4,
+        prepTime: "3 mins"
+      },
+      {
+        id: "24",
+        name: "Chocolate Brownie",
+        price: "₹180",
+        originalPrice: "₹220",
+        description: "Warm chocolate brownie served with vanilla ice cream",
         isVeg: true,
         rating: 4.6,
-        prepTime: "5 mins"
+        prepTime: "8 mins"
       }
     ]
   }
