@@ -22,45 +22,26 @@ interface MenuItemProps {
 
 const ItemContainer = styled(motion.div)`
   display: flex;
-  gap: ${theme.spacing.lg};
-  padding: ${theme.spacing.xl};
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.md};
   background: ${theme.colors.surface};
-  border-radius: ${theme.borderRadius.xl};
+  border-radius: ${theme.borderRadius.lg};
   border: 1px solid ${theme.colors.border};
-  transition: ${theme.transitions.normal};
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: ${theme.colors.primary};
-    transform: scaleY(0);
-    transition: ${theme.transitions.normal};
-    transform-origin: bottom;
-  }
+  transition: ${theme.transitions.fast};
   
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${theme.shadows.lg};
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.md};
     border-color: ${theme.colors.primary};
-    
-    &::before {
-      transform: scaleY(1);
-    }
   }
 `;
 
 const ItemImageContainer = styled.div`
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
-  border-radius: ${theme.borderRadius.xl};
+  border-radius: ${theme.borderRadius.md};
   overflow: hidden;
   background: ${theme.colors.backgroundLight};
 `;
@@ -76,69 +57,42 @@ const ItemImage = styled.div<{ backgroundImage?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${theme.fontSizes['2xl']};
+  font-size: ${theme.fontSizes.lg};
   color: ${theme.colors.textMuted};
-  position: relative;
-  transition: ${theme.transitions.normal};
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
-  }
-  
-  ${ItemContainer}:hover & {
-    transform: scale(1.05);
-  }
 `;
 
-const ItemBadges = styled.div`
+const VegBadge = styled.div<{ isVeg: boolean }>`
   position: absolute;
-  top: ${theme.spacing.sm};
-  left: ${theme.spacing.sm};
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.xs};
-  z-index: 2;
-`;
-
-const Badge = styled.div<{ variant: 'veg' | 'popular' | 'nonveg' }>`
+  top: 4px;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid ${props => props.isVeg ? theme.colors.success : theme.colors.error};
+  background: ${theme.colors.white};
+  border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: ${theme.borderRadius.full};
-  font-size: ${theme.fontSizes.sm};
-  font-weight: ${theme.fontWeights.bold};
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
   
-  ${props => {
-    switch (props.variant) {
-      case 'veg':
-        return `
-          background: rgba(34, 197, 94, 0.9);
-          color: ${theme.colors.white};
-        `;
-      case 'popular':
-        return `
-          background: rgba(245, 158, 11, 0.9);
-          color: ${theme.colors.white};
-        `;
-      case 'nonveg':
-        return `
-          background: rgba(239, 68, 68, 0.9);
-          color: ${theme.colors.white};
-        `;
-      default:
-        return '';
-    }
-  }}
+  &::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: ${props => props.isVeg ? theme.colors.success : theme.colors.error};
+    border-radius: 50%;
+  }
+`;
+
+const PopularBadge = styled.div`
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: ${theme.colors.warning};
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes.xs};
+  padding: 2px 4px;
+  border-radius: ${theme.borderRadius.sm};
+  font-weight: ${theme.fontWeights.bold};
 `;
 
 const ItemContent = styled.div`
@@ -146,21 +100,19 @@ const ItemContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: ${theme.spacing.md};
+  min-height: 80px;
 `;
 
 const ItemHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.xs};
 `;
 
 const ItemName = styled.h3`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.xl};
+  font-size: ${theme.fontSizes.base};
   font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
-  margin: 0;
+  margin: 0 0 ${theme.spacing.xs} 0;
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -169,9 +121,9 @@ const ItemName = styled.h3`
 `;
 
 const ItemDescription = styled.p`
-  font-size: ${theme.fontSizes.sm};
-  color: ${theme.colors.textLight};
-  line-height: 1.5;
+  font-size: ${theme.fontSizes.xs};
+  color: ${theme.colors.textMuted};
+  line-height: 1.4;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -182,17 +134,16 @@ const ItemDescription = styled.p`
 const ItemMeta = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.lg};
-  margin: ${theme.spacing.sm} 0;
+  gap: ${theme.spacing.md};
+  margin: ${theme.spacing.xs} 0;
 `;
 
 const MetaItem = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  font-size: ${theme.fontSizes.sm};
+  gap: 2px;
+  font-size: ${theme.fontSizes.xs};
   color: ${theme.colors.textMuted};
-  font-weight: ${theme.fontWeights.medium};
   
   svg {
     color: ${theme.colors.primary};
@@ -203,44 +154,43 @@ const ItemFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.md};
 `;
 
 const PriceSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.xs};
+  gap: 2px;
 `;
 
 const ItemPrice = styled.span`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes['2xl']};
+  font-size: ${theme.fontSizes.lg};
   font-weight: ${theme.fontWeights.bold};
   color: ${theme.colors.primary};
 `;
 
 const ItemOriginalPrice = styled.span`
-  font-size: ${theme.fontSizes.base};
+  font-size: ${theme.fontSizes.xs};
   color: ${theme.colors.textMuted};
   text-decoration: line-through;
-  font-weight: ${theme.fontWeights.normal};
 `;
 
 const QuantityControls = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
 `;
 
 const QuantityButton = styled(motion.button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   background: ${theme.colors.backgroundAlt};
   border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.md};
+  border-radius: ${theme.borderRadius.sm};
   color: ${theme.colors.text};
   cursor: pointer;
   transition: ${theme.transitions.fast};
@@ -250,42 +200,33 @@ const QuantityButton = styled(motion.button)`
     color: ${theme.colors.white};
     border-color: ${theme.colors.primary};
   }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 `;
 
 const QuantityDisplay = styled.span`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.lg};
+  font-size: ${theme.fontSizes.sm};
   font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
-  min-width: 24px;
+  min-width: 20px;
   text-align: center;
 `;
 
 const AddButton = styled(motion.button)`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  gap: ${theme.spacing.xs};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
   background: ${theme.colors.primary};
   color: ${theme.colors.white};
   border: none;
-  border-radius: ${theme.borderRadius.lg};
-  font-family: ${theme.fonts.body};
-  font-size: ${theme.fontSizes.sm};
+  border-radius: ${theme.borderRadius.sm};
+  font-size: ${theme.fontSizes.xs};
   font-weight: ${theme.fontWeights.semibold};
   cursor: pointer;
   transition: ${theme.transitions.fast};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   
   &:hover {
     background: ${theme.colors.primaryDark};
-    transform: scale(1.05);
   }
 `;
 
@@ -306,12 +247,12 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
 
   return (
     <ItemContainer
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true, margin: '-20px' }}
       transition={{ 
-        duration: 0.5, 
-        delay: index * 0.1,
+        duration: 0.3, 
+        delay: index * 0.05,
         ease: 'easeOut'
       }}
     >
@@ -320,22 +261,8 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
           {!item.image && '🍽️'}
         </ItemImage>
         
-        <ItemBadges>
-          {item.isVeg ? (
-            <Badge variant="veg" title="Vegetarian">
-              🥬
-            </Badge>
-          ) : (
-            <Badge variant="nonveg" title="Non-Vegetarian">
-              🍖
-            </Badge>
-          )}
-          {item.isPopular && (
-            <Badge variant="popular" title="Popular">
-              ⭐
-            </Badge>
-          )}
-        </ItemBadges>
+        <VegBadge isVeg={item.isVeg} />
+        {item.isPopular && <PopularBadge>★</PopularBadge>}
       </ItemImageContainer>
 
       <ItemContent>
@@ -350,13 +277,13 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
           <ItemMeta>
             {item.rating && (
               <MetaItem>
-                <Star size={16} fill="currentColor" />
+                <Star size={12} fill="currentColor" />
                 <span>{item.rating}</span>
               </MetaItem>
             )}
             {item.prepTime && (
               <MetaItem>
-                <Clock size={16} />
+                <Clock size={12} />
                 <span>{item.prepTime}</span>
               </MetaItem>
             )}
@@ -377,7 +304,7 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Plus size={16} />
+              <Plus size={12} />
               Add
             </AddButton>
           ) : (
@@ -387,7 +314,7 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Minus size={16} />
+                <Minus size={12} />
               </QuantityButton>
               <QuantityDisplay>{quantity}</QuantityDisplay>
               <QuantityButton
@@ -395,7 +322,7 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Plus size={16} />
+                <Plus size={12} />
               </QuantityButton>
             </QuantityControls>
           )}

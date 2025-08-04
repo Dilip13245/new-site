@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { theme } from '../styles/theme';
-import { Phone, MapPin, Clock, Star } from 'lucide-react';
+import { Phone, MapPin, Clock } from 'lucide-react';
 
 interface SidebarProps {
   restaurantInfo: {
@@ -24,10 +24,10 @@ interface SidebarProps {
 
 const SidebarContainer = styled.aside`
   position: fixed;
-  top: 80px;
+  top: 60px;
   left: 0;
-  width: 350px;
-  height: calc(100vh - 80px);
+  width: 280px;
+  height: calc(100vh - 60px);
   background: ${theme.colors.surface};
   border-right: 1px solid ${theme.colors.border};
   overflow-y: auto;
@@ -39,99 +39,74 @@ const SidebarContainer = styled.aside`
 `;
 
 const SidebarContent = styled.div`
-  padding: ${theme.spacing.xl};
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing['2xl']};
-`;
-
-const HeroSection = styled(motion.div)`
+  padding: ${theme.spacing.lg};
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
 `;
 
+const RestaurantSection = styled(motion.div)`
+  text-align: center;
+  padding-bottom: ${theme.spacing.lg};
+  border-bottom: 1px solid ${theme.colors.border};
+`;
+
 const RestaurantLogo = styled.div`
+  width: 60px;
+  height: 60px;
+  margin: 0 auto ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.xl};
+  background: ${theme.colors.primary};
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius['2xl']};
-  background: ${theme.gradients.primary};
-  box-shadow: ${theme.shadows.lg};
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: rotate(45deg);
-    animation: shimmer 3s ease-in-out infinite;
-  }
-  
-  @keyframes shimmer {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-  }
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const LogoImage = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: ${theme.borderRadius.xl};
+  width: 50px;
+  height: 50px;
+  border-radius: ${theme.borderRadius.lg};
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.2);
 `;
 
 const LogoFallback = styled.div`
-  font-size: ${theme.fontSizes['4xl']};
+  font-size: ${theme.fontSizes.xl};
   color: ${theme.colors.white};
 `;
 
 const RestaurantName = styled.h1`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes['2xl']};
-  font-weight: ${theme.fontWeights.bold};
+  font-size: ${theme.fontSizes.lg};
+  font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
-  text-align: center;
-  margin: 0;
-  line-height: 1.2;
+  margin: 0 0 ${theme.spacing.xs} 0;
 `;
 
 const RestaurantTagline = styled.p`
-  font-size: ${theme.fontSizes.base};
-  color: ${theme.colors.textLight};
-  text-align: center;
+  font-size: ${theme.fontSizes.sm};
+  color: ${theme.colors.textMuted};
   margin: 0;
-  line-height: 1.4;
 `;
 
 const ContactSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
 `;
 
 const ContactItem = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.sm};
   background: ${theme.colors.backgroundAlt};
-  border-radius: ${theme.borderRadius.lg};
-  border: 1px solid ${theme.colors.border};
+  border-radius: ${theme.borderRadius.md};
+  font-size: ${theme.fontSizes.xs};
   transition: ${theme.transitions.fast};
   
   &:hover {
-    border-color: ${theme.colors.primary};
-    transform: translateX(4px);
+    background: ${theme.colors.backgroundLight};
   }
 `;
 
@@ -139,22 +114,22 @@ const ContactIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   background: ${theme.colors.primary};
   color: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
+  border-radius: ${theme.borderRadius.sm};
   flex-shrink: 0;
 `;
 
 const ContactText = styled.div`
   flex: 1;
+  font-weight: ${theme.fontWeights.medium};
+  color: ${theme.colors.textLight};
   
   a {
-    color: ${theme.colors.textLight};
+    color: inherit;
     text-decoration: none;
-    font-weight: ${theme.fontWeights.medium};
-    transition: ${theme.transitions.fast};
     
     &:hover {
       color: ${theme.colors.primary};
@@ -165,133 +140,75 @@ const ContactText = styled.div`
 const CategoriesSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.md};
 `;
 
 const SectionTitle = styled.h3`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.xl};
+  font-size: ${theme.fontSizes.base};
   font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
   margin: 0;
-  padding-bottom: ${theme.spacing.md};
-  border-bottom: 2px solid ${theme.colors.primary};
+  padding-bottom: ${theme.spacing.sm};
+  border-bottom: 1px solid ${theme.colors.border};
 `;
 
 const CategoriesList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.xs};
 `;
 
 const CategoryItem = styled(motion.button)<{ isActive: boolean }>`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.lg};
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
   background: ${props => props.isActive 
     ? theme.colors.primary 
-    : theme.colors.backgroundAlt
+    : 'transparent'
   };
   color: ${props => props.isActive 
     ? theme.colors.white 
     : theme.colors.text
   };
-  border: 1px solid ${props => props.isActive 
-    ? theme.colors.primary 
-    : theme.colors.border
-  };
-  border-radius: ${theme.borderRadius.lg};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   transition: ${theme.transitions.fast};
   text-align: left;
   width: 100%;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: ${props => props.isActive ? '0' : '-100%'};
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: ${theme.transitions.normal};
-  }
+  font-size: ${theme.fontSizes.sm};
   
   &:hover {
-    transform: translateX(4px);
-    box-shadow: ${theme.shadows.md};
-    
-    &::before {
-      left: 100%;
-    }
+    background: ${props => props.isActive 
+      ? theme.colors.primary 
+      : theme.colors.backgroundAlt
+    };
   }
 `;
 
 const CategoryIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: ${theme.borderRadius.lg};
-  font-size: ${theme.fontSizes.xl};
+  font-size: ${theme.fontSizes.base};
+  width: 20px;
+  text-align: center;
   flex-shrink: 0;
 `;
 
 const CategoryInfo = styled.div`
   flex: 1;
   display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.xs};
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const CategoryName = styled.span`
-  font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.base};
-  font-weight: ${theme.fontWeights.semibold};
-  line-height: 1.2;
-`;
-
-const CategoryCount = styled.span`
-  font-size: ${theme.fontSizes.sm};
-  opacity: 0.8;
-`;
-
-const StatsSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.lg};
-  background: ${theme.gradients.subtle};
-  border-radius: ${theme.borderRadius.xl};
-  border: 1px solid ${theme.colors.border};
-`;
-
-const StatItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${theme.spacing.md};
-`;
-
-const StatLabel = styled.span`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  font-size: ${theme.fontSizes.sm};
-  color: ${theme.colors.textLight};
   font-weight: ${theme.fontWeights.medium};
 `;
 
-const StatValue = styled.span`
-  font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.lg};
-  font-weight: ${theme.fontWeights.bold};
-  color: ${theme.colors.primary};
+const CategoryCount = styled.span`
+  font-size: ${theme.fontSizes.xs};
+  opacity: 0.7;
 `;
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -302,7 +219,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const scrollToCategory = (categoryId: string) => {
     const element = document.getElementById(categoryId);
     if (element) {
-      const headerHeight = 80;
+      const headerHeight = 60;
       const elementPosition = element.offsetTop - headerHeight;
       window.scrollTo({
         top: elementPosition,
@@ -311,15 +228,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     }
   };
 
-  const totalItems = categories.reduce((sum, cat) => sum + cat.items.length, 0);
-
   return (
     <SidebarContainer>
       <SidebarContent>
-        <HeroSection
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
+        <RestaurantSection
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
           <RestaurantLogo>
             {restaurantInfo.logo ? (
@@ -328,7 +243,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 alt={restaurantInfo.name}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = '<div style="font-size: 3rem; color: white;">🍽️</div>';
+                  e.currentTarget.parentElement!.innerHTML = '<div style="font-size: 1.25rem; color: white;">🍽️</div>';
                 }}
               />
             ) : (
@@ -340,13 +255,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           {restaurantInfo.tagline && (
             <RestaurantTagline>{restaurantInfo.tagline}</RestaurantTagline>
           )}
-        </HeroSection>
+        </RestaurantSection>
 
         <ContactSection>
           {restaurantInfo.phone && (
             <ContactItem>
               <ContactIcon>
-                <Phone size={18} />
+                <Phone size={12} />
               </ContactIcon>
               <ContactText>
                 <a href={`tel:${restaurantInfo.phone.replace(/[^\d+]/g, '')}`}>
@@ -356,51 +271,33 @@ const Sidebar: React.FC<SidebarProps> = ({
             </ContactItem>
           )}
           
-          {restaurantInfo.address && (
-            <ContactItem>
-              <ContactIcon>
-                <MapPin size={18} />
-              </ContactIcon>
-              <ContactText>
-                <a 
-                  href="https://maps.app.goo.gl/vztXTynWqZ7C1nbx7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Location
-                </a>
-              </ContactText>
-            </ContactItem>
-          )}
+          <ContactItem>
+            <ContactIcon>
+              <MapPin size={12} />
+            </ContactIcon>
+            <ContactText>
+              <a 
+                href="https://maps.app.goo.gl/vztXTynWqZ7C1nbx7"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Location
+              </a>
+            </ContactText>
+          </ContactItem>
           
           <ContactItem>
             <ContactIcon>
-              <Clock size={18} />
+              <Clock size={12} />
             </ContactIcon>
             <ContactText>
-              <span>Open Daily: 11:00 AM - 11:00 PM</span>
+              <span>11:00 AM - 11:00 PM</span>
             </ContactText>
           </ContactItem>
         </ContactSection>
 
-        <StatsSection>
-          <StatItem>
-            <StatLabel>
-              <Star size={16} />
-              Total Items
-            </StatLabel>
-            <StatValue>{totalItems}</StatValue>
-          </StatItem>
-          <StatItem>
-            <StatLabel>
-              📋 Categories
-            </StatLabel>
-            <StatValue>{categories.length}</StatValue>
-          </StatItem>
-        </StatsSection>
-
         <CategoriesSection>
-          <SectionTitle>Menu Categories</SectionTitle>
+          <SectionTitle>Categories</SectionTitle>
           <CategoriesList>
             {categories.map((category, index) => (
               <CategoryItem
@@ -409,7 +306,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => scrollToCategory(category.id)}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -418,7 +315,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </CategoryIcon>
                 <CategoryInfo>
                   <CategoryName>{category.name}</CategoryName>
-                  <CategoryCount>{category.items.length} items</CategoryCount>
+                  <CategoryCount>{category.items.length}</CategoryCount>
                 </CategoryInfo>
               </CategoryItem>
             ))}

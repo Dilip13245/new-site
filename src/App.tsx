@@ -65,12 +65,12 @@ const AppContainer = styled.div`
 const LayoutContainer = styled.div`
   display: flex;
   flex: 1;
-  padding-top: 80px;
+  padding-top: 60px;
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  margin-left: 350px;
+  margin-left: 280px;
   
   @media (max-width: ${theme.breakpoints.lg}) {
     margin-left: 0;
@@ -78,10 +78,10 @@ const MainContent = styled.main`
 `;
 
 const MenuContainer = styled(motion.div)`
-  padding: ${theme.spacing.xl};
+  padding: ${theme.spacing.lg};
   
   @media (max-width: ${theme.breakpoints.md}) {
-    padding: ${theme.spacing.lg};
+    padding: ${theme.spacing.md};
   }
 `;
 
