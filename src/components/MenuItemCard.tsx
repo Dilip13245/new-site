@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { theme } from '../styles/theme';
-import { Star, Clock, Leaf, Flame, ShoppingCart, Heart } from 'lucide-react';
 
 interface MenuItemProps {
   item: {
@@ -21,353 +20,229 @@ interface MenuItemProps {
 }
 
 const ItemContainer = styled(motion.div)`
-  background: ${theme.gradients.glass};
-  backdrop-filter: blur(20px);
-  border: 1px solid ${theme.colors.glass};
-  border-radius: ${theme.borderRadius['2xl']};
+  display: flex;
+  gap: ${theme.spacing.lg};
   padding: ${theme.spacing.lg};
+  background: ${theme.colors.surface};
   transition: ${theme.transitions.normal};
   position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${theme.gradients.primary};
-    opacity: 0;
-    transition: ${theme.transitions.normal};
-    z-index: -1;
-  }
+  border-bottom: 1px solid ${theme.colors.border};
   
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.cardHover};
-    border-color: ${theme.colors.primary};
-    
-    &::before {
-      opacity: 0.05;
-    }
+    background: ${theme.colors.backgroundAlt};
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.sm};
   }
-`;
-
-const ItemImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 200px;
-  border-radius: ${theme.borderRadius.xl};
-  overflow: hidden;
-  margin-bottom: ${theme.spacing.lg};
-  background: ${theme.gradients.glass};
-  backdrop-filter: blur(10px);
+  
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 const ItemImage = styled.div<{ backgroundImage?: string }>`
-  width: 100%;
-  height: 100%;
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  border-radius: ${theme.borderRadius.lg};
   background: ${props => props.backgroundImage 
     ? `url(${props.backgroundImage})` 
-    : theme.gradients.primary};
+    : theme.colors.backgroundLight};
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${theme.fontSizes['3xl']};
-  color: ${theme.colors.white};
-  position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, transparent 50%);
-  }
-`;
-
-const ItemBadges = styled.div`
-  position: absolute;
-  top: ${theme.spacing.md};
-  left: ${theme.spacing.md};
-  display: flex;
-  gap: ${theme.spacing.sm};
-  z-index: 2;
-`;
-
-const Badge = styled.div<{ variant: 'veg' | 'popular' | 'spicy' }>`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.full};
-  font-size: ${theme.fontSizes.xs};
-  font-weight: ${theme.fontWeights.bold};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  backdrop-filter: blur(20px);
-  
-  ${props => {
-    switch (props.variant) {
-      case 'veg':
-        return `
-          background: rgba(34, 197, 94, 0.9);
-          color: ${theme.colors.white};
-          border: 1px solid rgba(34, 197, 94, 0.3);
-        `;
-      case 'popular':
-        return `
-          background: rgba(245, 158, 11, 0.9);
-          color: ${theme.colors.white};
-          border: 1px solid rgba(245, 158, 11, 0.3);
-        `;
-      case 'spicy':
-        return `
-          background: rgba(239, 68, 68, 0.9);
-          color: ${theme.colors.white};
-          border: 1px solid rgba(239, 68, 68, 0.3);
-        `;
-      default:
-        return '';
-    }
-  }}
-`;
-
-const ItemActions = styled.div`
-  position: absolute;
-  top: ${theme.spacing.md};
-  right: ${theme.spacing.md};
-  display: flex;
-  gap: ${theme.spacing.sm};
-  z-index: 2;
-`;
-
-const ActionButton = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: ${theme.gradients.glass};
-  backdrop-filter: blur(20px);
-  border: 1px solid ${theme.colors.glass};
-  border-radius: ${theme.borderRadius.full};
-  color: ${theme.colors.textLight};
-  cursor: pointer;
-  transition: ${theme.transitions.fast};
-  
-  &:hover {
-    background: ${theme.gradients.primary};
-    color: ${theme.colors.white};
-    transform: scale(1.1);
-  }
+  font-size: ${theme.fontSizes.xl};
+  color: ${theme.colors.textMuted};
+  border: 1px solid ${theme.colors.border};
 `;
 
 const ItemContent = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.md};
+  justify-content: space-between;
+  min-height: 80px;
 `;
 
 const ItemHeader = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.sm};
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.xs};
 `;
 
 const ItemName = styled.h3`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.xl};
-  font-weight: ${theme.fontWeights.bold};
+  font-size: ${theme.fontSizes.lg};
+  font-weight: ${theme.fontWeights.medium};
   color: ${theme.colors.text};
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.3;
+  flex: 1;
+`;
+
+const ItemBadges = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  flex-shrink: 0;
+`;
+
+const VegBadge = styled.div<{ isVeg: boolean }>`
+  width: 16px;
+  height: 16px;
+  border: 2px solid ${props => props.isVeg ? theme.colors.success : theme.colors.error};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: ${theme.colors.surface};
+  
+  &::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: ${props => props.isVeg ? theme.colors.success : theme.colors.error};
+    border-radius: 50%;
+  }
+`;
+
+const PopularBadge = styled.span`
+  background: ${theme.colors.warning};
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes.xs};
+  padding: 2px 6px;
+  border-radius: ${theme.borderRadius.sm};
+  font-weight: ${theme.fontWeights.semibold};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 const ItemDescription = styled.p`
   font-size: ${theme.fontSizes.sm};
   color: ${theme.colors.textLight};
   line-height: 1.5;
-  margin: 0;
+  margin: 0 0 ${theme.spacing.sm} 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
 
-const ItemMeta = styled.div`
+const ItemFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${theme.spacing.md};
 `;
 
-const MetaGroup = styled.div`
+const ItemMeta = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
+  font-size: ${theme.fontSizes.xs};
+  color: ${theme.colors.textMuted};
 `;
 
-const MetaItem = styled.div`
+const ItemRating = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  font-size: ${theme.fontSizes.sm};
-  color: ${theme.colors.textMuted};
-  font-family: ${theme.fonts.accent};
-  font-weight: ${theme.fontWeights.medium};
+  gap: 3px;
+  background: rgba(255, 193, 7, 0.1);
+  padding: 2px 6px;
+  border-radius: ${theme.borderRadius.sm};
+  border: 1px solid rgba(255, 193, 7, 0.2);
+`;
+
+const ItemPrepTime = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(56, 161, 105, 0.1);
+  padding: 2px 6px;
+  border-radius: ${theme.borderRadius.sm};
+  border: 1px solid rgba(56, 161, 105, 0.2);
 `;
 
 const ItemPricing = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: ${theme.spacing.md};
-  padding-top: ${theme.spacing.md};
-  border-top: 1px solid ${theme.colors.glass};
-`;
-
-const PriceGroup = styled.div`
-  display: flex;
-  align-items: center;
   gap: ${theme.spacing.sm};
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 const ItemPrice = styled.span`
-  font-family: ${theme.fonts.display};
-  font-size: ${theme.fontSizes['2xl']};
-  font-weight: ${theme.fontWeights.black};
-  background: ${theme.gradients.primary};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: ${theme.fonts.heading};
+  font-size: ${theme.fontSizes.xl};
+  font-weight: ${theme.fontWeights.semibold};
+  color: ${theme.colors.primary};
 `;
 
 const ItemOriginalPrice = styled.span`
-  font-size: ${theme.fontSizes.base};
+  font-size: ${theme.fontSizes.sm};
   color: ${theme.colors.textMuted};
   text-decoration: line-through;
-  font-weight: ${theme.fontWeights.medium};
-`;
-
-const AddToCartButton = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.sm} ${theme.spacing.lg};
-  background: ${theme.gradients.primary};
-  color: ${theme.colors.white};
-  border: none;
-  border-radius: ${theme.borderRadius.xl};
-  font-family: ${theme.fonts.accent};
-  font-size: ${theme.fontSizes.sm};
-  font-weight: ${theme.fontWeights.bold};
-  cursor: pointer;
-  transition: ${theme.transitions.fast};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: ${theme.shadows.glow};
-  }
+  font-weight: ${theme.fontWeights.normal};
 `;
 
 const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
   return (
     <ItemContainer
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: '-20px' }}
       transition={{ 
-        duration: 0.6, 
-        delay: index * 0.1,
+        duration: 0.4, 
+        delay: index * 0.05,
         ease: 'easeOut'
       }}
-      whileHover={{ scale: 1.02 }}
     >
-      <ItemImageContainer>
-        <ItemImage backgroundImage={item.image}>
-          {!item.image && '🍽️'}
-        </ItemImage>
-        
-        <ItemBadges>
-          {item.isVeg ? (
-            <Badge variant="veg">
-              <Leaf size={12} />
-              Veg
-            </Badge>
-          ) : (
-            <Badge variant="spicy">
-              <Flame size={12} />
-              Non-Veg
-            </Badge>
-          )}
-          {item.isPopular && (
-            <Badge variant="popular">
-              <Star size={12} />
-              Popular
-            </Badge>
-          )}
-        </ItemBadges>
-        
-        <ItemActions>
-          <ActionButton
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Heart size={18} />
-          </ActionButton>
-        </ItemActions>
-      </ItemImageContainer>
+      <ItemImage backgroundImage={item.image}>
+        {!item.image && '🍽️'}
+      </ItemImage>
 
       <ItemContent>
-        <ItemHeader>
-          <ItemName>{item.name}</ItemName>
+        <div>
+          <ItemHeader>
+            <ItemName>{item.name}</ItemName>
+            <ItemBadges>
+              <VegBadge isVeg={item.isVeg} />
+              {item.isPopular && <PopularBadge>★</PopularBadge>}
+            </ItemBadges>
+          </ItemHeader>
+
           {item.description && (
             <ItemDescription>{item.description}</ItemDescription>
           )}
-        </ItemHeader>
+        </div>
 
-        <ItemMeta>
-          <MetaGroup>
+        <ItemFooter>
+          <ItemMeta>
             {item.rating && (
-              <MetaItem>
-                <Star size={16} fill="currentColor" />
+              <ItemRating>
+                <span>⭐</span>
                 <span>{item.rating}</span>
-              </MetaItem>
+              </ItemRating>
             )}
             {item.prepTime && (
-              <MetaItem>
-                <Clock size={16} />
+              <ItemPrepTime>
+                <span>🕐</span>
                 <span>{item.prepTime}</span>
-              </MetaItem>
+              </ItemPrepTime>
             )}
-          </MetaGroup>
-        </ItemMeta>
+          </ItemMeta>
 
-        <ItemPricing>
-          <PriceGroup>
+          <ItemPricing>
             <ItemPrice>{item.price}</ItemPrice>
             {item.originalPrice && (
               <ItemOriginalPrice>{item.originalPrice}</ItemOriginalPrice>
             )}
-          </PriceGroup>
-          
-          <AddToCartButton
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ShoppingCart size={16} />
-            Add
-          </AddToCartButton>
-        </ItemPricing>
+          </ItemPricing>
+        </ItemFooter>
       </ItemContent>
     </ItemContainer>
   );

@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { theme } from '../styles/theme';
 import { Container } from '../styles/GlobalStyles';
 import MenuItemCard from './MenuItemCard';
-import { Utensils, Leaf, Flame, Star, TrendingUp } from 'lucide-react';
 
 interface MenuCategoryProps {
   category: {
@@ -30,180 +29,96 @@ interface MenuCategoryProps {
 }
 
 const CategorySection = styled.section`
-  margin-bottom: ${theme.spacing['4xl']};
+  margin-bottom: ${theme.spacing['3xl']};
 `;
 
 const CategoryHeader = styled(motion.div)`
-  background: ${theme.gradients.glass};
-  backdrop-filter: blur(20px);
-  border: 1px solid ${theme.colors.glass};
-  border-radius: ${theme.borderRadius['2xl']};
-  margin-bottom: ${theme.spacing['2xl']};
-  overflow: hidden;
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: ${theme.gradients.primary};
-  }
+  background: ${theme.colors.surface};
+  border-left: 4px solid ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.lg};
+  box-shadow: ${theme.shadows.sm};
+  border-radius: 0 ${theme.borderRadius.md} ${theme.borderRadius.md} 0;
 `;
 
 const CategoryHeaderContent = styled(Container)`
-  padding: ${theme.spacing.xl};
+  padding: ${theme.spacing.lg};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.lg};
-  
-  @media (max-width: ${theme.breakpoints.sm}) {
-    flex-direction: column;
-    text-align: center;
-    gap: ${theme.spacing.md};
-  }
 `;
 
 const CategoryIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  background: ${theme.gradients.primary};
-  border-radius: ${theme.borderRadius.xl};
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: ${theme.transitions.slow};
-  }
-  
-  &:hover::before {
-    left: 100%;
-  }
+  min-width: 50px;
+  height: 50px;
 `;
 
 const CategoryImage = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 50px;
+  height: 50px;
+  border-radius: ${theme.borderRadius.md};
   object-fit: cover;
-  border-radius: ${theme.borderRadius.lg};
+  border: 2px solid ${theme.colors.primary};
 `;
 
 const CategoryIcon = styled.span`
   font-size: ${theme.fontSizes['2xl']};
-  color: ${theme.colors.white};
+  min-width: 50px;
+  text-align: center;
 `;
 
 const CategoryInfo = styled.div`
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
 `;
 
 const CategoryTitle = styled.h2`
-  font-family: ${theme.fonts.display};
-  font-size: ${theme.fontSizes['3xl']};
-  font-weight: ${theme.fontWeights.black};
-  background: ${theme.gradients.primary};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0;
-  line-height: 1.1;
-  
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes['2xl']};
-  }
+  font-family: ${theme.fonts.heading};
+  font-size: ${theme.fontSizes['2xl']};
+  font-weight: ${theme.fontWeights.semibold};
+  color: ${theme.colors.text};
+  margin: 0 0 ${theme.spacing.xs} 0;
 `;
 
-const CategoryDescription = styled.p`
-  font-size: ${theme.fontSizes.base};
-  color: ${theme.colors.textLight};
-  margin: 0;
-  line-height: 1.5;
-`;
-
-const CategoryStats = styled.div`
+const CategoryMeta = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.lg};
+  font-size: ${theme.fontSizes.sm};
+  color: ${theme.colors.textLight};
   flex-wrap: wrap;
-  
-  @media (max-width: ${theme.breakpoints.sm}) {
-    justify-content: center;
-  }
 `;
 
-const StatCard = styled.div`
+const CategoryStat = styled.span`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  background: ${theme.gradients.glass};
-  backdrop-filter: blur(20px);
-  border: 1px solid ${theme.colors.glass};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  font-family: ${theme.fonts.accent};
-  font-size: ${theme.fontSizes.sm};
-  font-weight: ${theme.fontWeights.semibold};
-  color: ${theme.colors.textLight};
-  transition: ${theme.transitions.fast};
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.glow};
-  }
+  gap: ${theme.spacing.xs};
+  font-weight: ${theme.fontWeights.medium};
 `;
 
-const StatIcon = styled.div<{ color: string }>`
-  color: ${props => props.color};
-`;
-
-const ItemsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: ${theme.spacing.xl};
-  
-  @media (max-width: ${theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
-  }
+const ItemsList = styled.div`
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius.lg};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.sm};
+  border: 1px solid ${theme.colors.border};
 `;
 
 const EmptyState = styled(motion.div)`
   text-align: center;
-  padding: ${theme.spacing['4xl']} ${theme.spacing.lg};
-  background: ${theme.gradients.glass};
-  backdrop-filter: blur(20px);
-  border: 1px solid ${theme.colors.glass};
-  border-radius: ${theme.borderRadius['2xl']};
-  margin: ${theme.spacing.xl} 0;
+  padding: ${theme.spacing['2xl']} ${theme.spacing.lg};
+  color: ${theme.colors.textMuted};
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius.lg};
+  margin: ${theme.spacing.lg} 0;
+  border: 1px solid ${theme.colors.border};
 `;
 
 const EmptyIcon = styled.div`
-  font-size: ${theme.fontSizes['4xl']};
-  margin-bottom: ${theme.spacing.lg};
+  font-size: ${theme.fontSizes['2xl']};
+  margin-bottom: ${theme.spacing.md};
   opacity: 0.5;
-`;
-
-const EmptyTitle = styled.h3`
-  font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.xl};
-  color: ${theme.colors.textLight};
-  margin: 0 0 ${theme.spacing.sm} 0;
 `;
 
 const EmptyText = styled.p`
@@ -226,11 +141,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
           src={category.image} 
           alt={category.name}
           onError={(e) => {
-            // If image fails to load, show emoji icon instead
-            const target = e.currentTarget;
-            const parent = target.parentElement;
-            if (parent) {
-              parent.innerHTML = `<span style="font-size: ${theme.fontSizes['2xl']}; color: ${theme.colors.white};">${category.icon || '🍽️'}</span>`;
+            // If image fails to load, hide it and show emoji icon instead
+            e.currentTarget.style.display = 'none';
+            const iconElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (iconElement) {
+              iconElement.style.display = 'block';
             }
           }}
         />
@@ -250,10 +165,10 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
       <CategorySection id={category.id} className="category-section">
         <Container>
           <CategoryHeader
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: animationDelay }}
+            transition={{ duration: 0.4, delay: animationDelay }}
           >
             <CategoryHeaderContent>
               <CategoryIconContainer>
@@ -261,30 +176,24 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
               </CategoryIconContainer>
               <CategoryInfo>
                 <CategoryTitle>{category.name}</CategoryTitle>
-                {category.description && (
-                  <CategoryDescription>{category.description}</CategoryDescription>
-                )}
-                <CategoryStats>
-                  <StatCard>
-                    <StatIcon color={theme.colors.textMuted}>
-                      <Utensils size={16} />
-                    </StatIcon>
+                <CategoryMeta>
+                  <CategoryStat>
+                    <span>📋</span>
                     <span>0 items</span>
-                  </StatCard>
-                </CategoryStats>
+                  </CategoryStat>
+                </CategoryMeta>
               </CategoryInfo>
             </CategoryHeaderContent>
           </CategoryHeader>
 
           <EmptyState
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: animationDelay + 0.2 }}
+            transition={{ duration: 0.3, delay: animationDelay + 0.1 }}
           >
             <EmptyIcon>🍽️</EmptyIcon>
-            <EmptyTitle>Coming Soon</EmptyTitle>
-            <EmptyText>No items available in this category yet</EmptyText>
+            <EmptyText>No items available in this category</EmptyText>
           </EmptyState>
         </Container>
       </CategorySection>
@@ -295,66 +204,61 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
     <CategorySection id={category.id} className="category-section">
       <Container>
         <CategoryHeader
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: animationDelay }}
+          transition={{ duration: 0.4, delay: animationDelay }}
         >
           <CategoryHeaderContent>
             <CategoryIconContainer>
               {renderCategoryIcon()}
+              {/* Hidden emoji icon as fallback */}
+              {category.image && category.image.trim() !== '' && category.image !== 'undefined' && (
+                <CategoryIcon style={{ display: 'none' }}>
+                  {category.icon || '🍽️'}
+                </CategoryIcon>
+              )}
             </CategoryIconContainer>
             <CategoryInfo>
               <CategoryTitle>{category.name}</CategoryTitle>
-              {category.description && (
-                <CategoryDescription>{category.description}</CategoryDescription>
-              )}
-              <CategoryStats>
-                <StatCard>
-                  <StatIcon color={theme.colors.primary}>
-                    <Utensils size={16} />
-                  </StatIcon>
+              <CategoryMeta>
+                <CategoryStat>
+                  <span>📋</span>
                   <span>{category.items.length} items</span>
-                </StatCard>
+                </CategoryStat>
                 
                 {vegCount > 0 && (
-                  <StatCard>
-                    <StatIcon color={theme.colors.success}>
-                      <Leaf size={16} />
-                    </StatIcon>
+                  <CategoryStat>
+                    <span>🥬</span>
                     <span>{vegCount} veg</span>
-                  </StatCard>
+                  </CategoryStat>
                 )}
                 
                 {nonVegCount > 0 && (
-                  <StatCard>
-                    <StatIcon color={theme.colors.error}>
-                      <Flame size={16} />
-                    </StatIcon>
+                  <CategoryStat>
+                    <span>🍖</span>
                     <span>{nonVegCount} non-veg</span>
-                  </StatCard>
+                  </CategoryStat>
                 )}
                 
                 {popularCount > 0 && (
-                  <StatCard>
-                    <StatIcon color={theme.colors.secondary}>
-                      <TrendingUp size={16} />
-                    </StatIcon>
+                  <CategoryStat>
+                    <span>⭐</span>
                     <span>{popularCount} popular</span>
-                  </StatCard>
+                  </CategoryStat>
                 )}
-              </CategoryStats>
+              </CategoryMeta>
             </CategoryInfo>
           </CategoryHeaderContent>
         </CategoryHeader>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: animationDelay + 0.3 }}
+          transition={{ duration: 0.5, delay: animationDelay + 0.1 }}
         >
-          <ItemsGrid>
+          <ItemsList>
             {category.items.map((item, index) => (
               <MenuItemCard
                 key={item.id}
@@ -362,7 +266,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
                 index={index}
               />
             ))}
-          </ItemsGrid>
+          </ItemsList>
         </motion.div>
       </Container>
     </CategorySection>
