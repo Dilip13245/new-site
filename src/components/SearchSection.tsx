@@ -13,8 +13,7 @@ interface SearchSectionProps {
 const SearchContainer = styled.section`
   background: ${theme.colors.backgroundAlt};
   padding: ${theme.spacing.xl} 0;
-  border-top: 1px solid ${theme.colors.border};
-  border-bottom: 1px solid ${theme.colors.border};
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const SearchContent = styled(Container)`
@@ -28,12 +27,13 @@ const SearchBox = styled(motion.div)`
   background: ${theme.colors.surface};
   border: 1px solid ${theme.colors.border};
   border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.sm};
+  box-shadow: ${theme.shadows.card};
   transition: ${theme.transitions.fast};
 
   &:focus-within {
     border-color: ${theme.colors.primary};
-    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    box-shadow: ${theme.shadows.cardHover};
+    transform: translateY(-1px);
   }
 `;
 
@@ -75,10 +75,13 @@ const ClearButton = styled(motion.button)<{ show: boolean }>`
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   transition: ${theme.transitions.fast};
+  box-shadow: ${theme.shadows.sm};
   
   &:hover {
     background: ${theme.colors.primary};
     color: ${theme.colors.white};
+    box-shadow: ${theme.shadows.md};
+    transform: scale(1.05);
   }
 `;
 

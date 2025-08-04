@@ -26,14 +26,9 @@ const HeaderContainer = styled(motion.header)<{ isScrolled: boolean }>`
   left: 0;
   right: 0;
   z-index: ${theme.zIndex.sticky};
-  background: ${props => props.isScrolled 
-    ? 'rgba(255, 255, 255, 0.98)' 
-    : 'rgba(255, 255, 255, 0.95)'
-  };
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid ${theme.colors.border};
+  background: ${theme.colors.surface};
   transition: ${theme.transitions.normal};
-  box-shadow: ${props => props.isScrolled ? theme.shadows.sm : 'none'};
+  box-shadow: ${theme.shadows.header};
 `;
 
 const HeaderContent = styled.div`
@@ -60,6 +55,7 @@ const LogoImage = styled.img`
   height: 40px;
   border-radius: ${theme.borderRadius.md};
   object-fit: cover;
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const LogoText = styled.div`
@@ -103,6 +99,16 @@ const ContactItem = styled.div`
   color: ${theme.colors.textLight};
   font-size: ${theme.fontSizes.sm};
   font-weight: ${theme.fontWeights.medium};
+  background: ${theme.colors.backgroundAlt};
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.shadows.sm};
+  transition: ${theme.transitions.fast};
+
+  &:hover {
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-1px);
+  }
 
   svg {
     color: ${theme.colors.primary};
@@ -116,15 +122,17 @@ const MobileMenuButton = styled.button`
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: transparent;
+  background: ${theme.colors.surface};
   border: 1px solid ${theme.colors.border};
   border-radius: ${theme.borderRadius.md};
   color: ${theme.colors.text};
   cursor: pointer;
   transition: ${theme.transitions.fast};
+  box-shadow: ${theme.shadows.sm};
 
   &:hover {
-    background: ${theme.colors.backgroundAlt};
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-1px);
   }
 
   @media (min-width: ${theme.breakpoints.lg}) {
@@ -181,7 +189,7 @@ const MobileNavLink = styled.button<{ isActive: boolean }>`
   width: 100%;
   background: ${props => props.isActive 
     ? theme.colors.primary 
-    : 'transparent'
+    : theme.colors.surface
   };
   color: ${props => props.isActive 
     ? theme.colors.white 
@@ -197,12 +205,11 @@ const MobileNavLink = styled.button<{ isActive: boolean }>`
   transition: ${theme.transitions.fast};
   text-align: left;
   margin-bottom: ${theme.spacing.sm};
+  box-shadow: ${theme.shadows.sm};
 
   &:hover {
-    background: ${props => props.isActive 
-      ? theme.colors.primary 
-      : theme.colors.backgroundAlt
-    };
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-1px);
   }
 `;
 
@@ -218,9 +225,11 @@ const CloseButton = styled.button`
   color: ${theme.colors.text};
   cursor: pointer;
   transition: ${theme.transitions.fast};
+  box-shadow: ${theme.shadows.sm};
 
   &:hover {
-    background: ${theme.colors.backgroundLight};
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-1px);
   }
 `;
 
@@ -244,7 +253,7 @@ const Header: React.FC<HeaderProps> = ({
   const scrollToCategory = (categoryId: string) => {
     const element = document.getElementById(categoryId);
     if (element) {
-      const headerHeight = 80;
+      const headerHeight = 60;
       const elementPosition = element.offsetTop - headerHeight;
       window.scrollTo({
         top: elementPosition,
@@ -286,12 +295,10 @@ const Header: React.FC<HeaderProps> = ({
                   <span>{restaurantInfo.phone}</span>
                 </ContactItem>
               )}
-              {restaurantInfo.address && (
-                <ContactItem>
-                  <MapPin size={16} />
-                  <span>Order Now</span>
-                </ContactItem>
-              )}
+              <ContactItem>
+                <MapPin size={16} />
+                <span>Order Now</span>
+              </ContactItem>
             </ContactInfo>
 
             <MobileMenuButton

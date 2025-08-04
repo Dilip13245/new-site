@@ -29,7 +29,7 @@ const SidebarContainer = styled.aside`
   width: 280px;
   height: calc(100vh - 60px);
   background: ${theme.colors.surface};
-  border-right: 1px solid ${theme.colors.border};
+  box-shadow: ${theme.shadows.sidebar};
   overflow-y: auto;
   z-index: ${theme.zIndex.sticky - 1};
   
@@ -47,8 +47,11 @@ const SidebarContent = styled.div`
 
 const RestaurantSection = styled(motion.div)`
   text-align: center;
-  padding-bottom: ${theme.spacing.lg};
-  border-bottom: 1px solid ${theme.colors.border};
+  padding: ${theme.spacing.lg};
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: ${theme.shadows.card};
+  margin-bottom: ${theme.spacing.md};
 `;
 
 const RestaurantLogo = styled.div`
@@ -60,7 +63,7 @@ const RestaurantLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: ${theme.shadows.sm};
+  box-shadow: ${theme.shadows.button};
 `;
 
 const LogoImage = styled.img`
@@ -100,13 +103,15 @@ const ContactItem = styled.div`
   align-items: center;
   gap: ${theme.spacing.sm};
   padding: ${theme.spacing.sm};
-  background: ${theme.colors.backgroundAlt};
+  background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius.md};
   font-size: ${theme.fontSizes.xs};
   transition: ${theme.transitions.fast};
+  box-shadow: ${theme.shadows.sm};
   
   &:hover {
-    background: ${theme.colors.backgroundLight};
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-1px);
   }
 `;
 
@@ -120,6 +125,7 @@ const ContactIcon = styled.div`
   color: ${theme.colors.white};
   border-radius: ${theme.borderRadius.sm};
   flex-shrink: 0;
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const ContactText = styled.div`
@@ -149,8 +155,7 @@ const SectionTitle = styled.h3`
   font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
   margin: 0;
-  padding-bottom: ${theme.spacing.sm};
-  border-bottom: 1px solid ${theme.colors.border};
+  padding: ${theme.spacing.sm} 0;
 `;
 
 const CategoriesList = styled.div`
@@ -166,7 +171,7 @@ const CategoryItem = styled(motion.button)<{ isActive: boolean }>`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   background: ${props => props.isActive 
     ? theme.colors.primary 
-    : 'transparent'
+    : theme.colors.surface
   };
   color: ${props => props.isActive 
     ? theme.colors.white 
@@ -179,12 +184,17 @@ const CategoryItem = styled(motion.button)<{ isActive: boolean }>`
   text-align: left;
   width: 100%;
   font-size: ${theme.fontSizes.sm};
+  box-shadow: ${props => props.isActive 
+    ? theme.shadows.button 
+    : theme.shadows.sm
+  };
   
   &:hover {
-    background: ${props => props.isActive 
-      ? theme.colors.primary 
-      : theme.colors.backgroundAlt
+    box-shadow: ${props => props.isActive 
+      ? theme.shadows.buttonHover 
+      : theme.shadows.md
     };
+    transform: translateY(-1px);
   }
 `;
 
@@ -209,6 +219,9 @@ const CategoryName = styled.span`
 const CategoryCount = styled.span`
   font-size: ${theme.fontSizes.xs};
   opacity: 0.7;
+  background: ${props => props.theme.colors.backgroundAlt};
+  padding: 2px 6px;
+  border-radius: ${theme.borderRadius.sm};
 `;
 
 const Sidebar: React.FC<SidebarProps> = ({ 

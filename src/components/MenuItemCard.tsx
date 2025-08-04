@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { theme } from '../styles/theme';
-import { Star, Clock, Plus, Minus } from 'lucide-react';
+import { Star, Clock } from 'lucide-react';
 
 interface MenuItemProps {
   item: {
@@ -23,16 +23,15 @@ interface MenuItemProps {
 const ItemContainer = styled(motion.div)`
   display: flex;
   gap: ${theme.spacing.md};
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.lg};
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius.lg};
-  border: 1px solid ${theme.colors.border};
   transition: ${theme.transitions.fast};
+  box-shadow: ${theme.shadows.card};
   
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: ${theme.shadows.md};
-    border-color: ${theme.colors.primary};
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.cardHover};
   }
 `;
 
@@ -44,6 +43,7 @@ const ItemImageContainer = styled.div`
   border-radius: ${theme.borderRadius.md};
   overflow: hidden;
   background: ${theme.colors.backgroundLight};
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const ItemImage = styled.div<{ backgroundImage?: string }>`
@@ -73,6 +73,7 @@ const VegBadge = styled.div<{ isVeg: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: ${theme.shadows.sm};
   
   &::after {
     content: '';
@@ -93,6 +94,7 @@ const PopularBadge = styled.div`
   padding: 2px 4px;
   border-radius: ${theme.borderRadius.sm};
   font-weight: ${theme.fontWeights.bold};
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const ItemContent = styled.div`
@@ -144,6 +146,10 @@ const MetaItem = styled.div`
   gap: 2px;
   font-size: ${theme.fontSizes.xs};
   color: ${theme.colors.textMuted};
+  background: ${theme.colors.backgroundAlt};
+  padding: 2px 6px;
+  border-radius: ${theme.borderRadius.sm};
+  box-shadow: ${theme.shadows.sm};
   
   svg {
     color: ${theme.colors.primary};
@@ -152,15 +158,20 @@ const MetaItem = styled.div`
 
 const ItemFooter = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: flex-end;
   gap: ${theme.spacing.md};
 `;
 
 const PriceSection = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 2px;
+  background: ${theme.colors.backgroundAlt};
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const ItemPrice = styled.span`
@@ -176,75 +187,7 @@ const ItemOriginalPrice = styled.span`
   text-decoration: line-through;
 `;
 
-const QuantityControls = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-`;
-
-const QuantityButton = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: ${theme.colors.backgroundAlt};
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.sm};
-  color: ${theme.colors.text};
-  cursor: pointer;
-  transition: ${theme.transitions.fast};
-  
-  &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
-    border-color: ${theme.colors.primary};
-  }
-`;
-
-const QuantityDisplay = styled.span`
-  font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.sm};
-  font-weight: ${theme.fontWeights.semibold};
-  color: ${theme.colors.text};
-  min-width: 20px;
-  text-align: center;
-`;
-
-const AddButton = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  border: none;
-  border-radius: ${theme.borderRadius.sm};
-  font-size: ${theme.fontSizes.xs};
-  font-weight: ${theme.fontWeights.semibold};
-  cursor: pointer;
-  transition: ${theme.transitions.fast};
-  
-  &:hover {
-    background: ${theme.colors.primaryDark};
-  }
-`;
-
 const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
-  const [quantity, setQuantity] = React.useState(0);
-
-  const handleAddToCart = () => {
-    setQuantity(1);
-  };
-
-  const handleIncrement = () => {
-    setQuantity(prev => prev + 1);
-  };
-
-  const handleDecrement = () => {
-    setQuantity(prev => Math.max(0, prev - 1));
-  };
-
   return (
     <ItemContainer
       initial={{ opacity: 0, y: 10 }}
@@ -297,35 +240,6 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
               <ItemOriginalPrice>{item.originalPrice}</ItemOriginalPrice>
             )}
           </PriceSection>
-          
-          {quantity === 0 ? (
-            <AddButton
-              onClick={handleAddToCart}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Plus size={12} />
-              Add
-            </AddButton>
-          ) : (
-            <QuantityControls>
-              <QuantityButton
-                onClick={handleDecrement}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Minus size={12} />
-              </QuantityButton>
-              <QuantityDisplay>{quantity}</QuantityDisplay>
-              <QuantityButton
-                onClick={handleIncrement}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Plus size={12} />
-              </QuantityButton>
-            </QuantityControls>
-          )}
         </ItemFooter>
       </ItemContent>
     </ItemContainer>
