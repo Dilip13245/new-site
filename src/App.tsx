@@ -65,6 +65,79 @@ const fallbackRestaurantInfo: RestaurantInfo = {
   address: "Gujarat High Court, Vishwas City 1, Sola, Ahmedabad"
 };
 
+// Fallback menu data
+const fallbackMenu: MenuCategory[] = [
+  {
+    id: "appetizers",
+    name: "Appetizers",
+    icon: "🥗",
+    items: [
+      {
+        id: "1",
+        name: "Caesar Salad",
+        price: "₹299",
+        description: "Fresh romaine lettuce with caesar dressing",
+        isVeg: true,
+        isPopular: true,
+        rating: 4.5,
+        prepTime: "10 mins"
+      },
+      {
+        id: "2",
+        name: "Chicken Wings",
+        price: "₹399",
+        description: "Spicy buffalo wings with ranch dip",
+        isVeg: false,
+        rating: 4.3,
+        prepTime: "15 mins"
+      }
+    ]
+  },
+  {
+    id: "mains",
+    name: "Main Course",
+    icon: "🍽️",
+    items: [
+      {
+        id: "3",
+        name: "Grilled Chicken",
+        price: "₹599",
+        originalPrice: "₹699",
+        description: "Perfectly grilled chicken with herbs",
+        isVeg: false,
+        isPopular: true,
+        rating: 4.7,
+        prepTime: "25 mins"
+      },
+      {
+        id: "4",
+        name: "Vegetable Pasta",
+        price: "₹449",
+        description: "Fresh pasta with seasonal vegetables",
+        isVeg: true,
+        rating: 4.2,
+        prepTime: "20 mins"
+      }
+    ]
+  },
+  {
+    id: "desserts",
+    name: "Desserts",
+    icon: "🍰",
+    items: [
+      {
+        id: "5",
+        name: "Chocolate Cake",
+        price: "₹249",
+        description: "Rich chocolate cake with cream",
+        isVeg: true,
+        rating: 4.6,
+        prepTime: "5 mins"
+      }
+    ]
+  }
+];
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('');
@@ -76,34 +149,46 @@ function App() {
   // Restaurant ID from configuration
   const RESTAURANT_ID = APP_CONFIG.RESTAURANT_ID;
 
-  // Load data from Firebase
+  // Load data from Firebase with optimized loading
   useEffect(() => {
     const loadFirebaseData = async () => {
+      // Start with fallback data immediately
+      setMenu(fallbackMenu);
+      setRestaurantInfo(fallbackRestaurantInfo);
+      
       try {
-        setIsLoading(true);
+        // Set a timeout for Firebase calls (5 seconds max)
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Firebase timeout')), 5000)
+        );
 
-        // Fetch data from Firebase
-        const [categories, menuItems, restaurantData] = await Promise.all([
-          fetchCategories(RESTAURANT_ID),
-          fetchMenuItems(RESTAURANT_ID),
-          fetchRestaurantInfo(RESTAURANT_ID)
-        ]);
+        // Race Firebase calls against timeout
+        const [categories, menuItems, restaurantData] = await Promise.race([
+          Promise.all([
+            fetchCategories(RESTAURANT_ID),
+            fetchMenuItems(RESTAURANT_ID),
+            fetchRestaurantInfo(RESTAURANT_ID)
+          ]),
+          timeoutPromise
+        ]) as any;
 
-        console.log('Firebase restaurant data:', restaurantData);
+        console.log('Firebase data loaded:', { categories: categories.length, menuItems: menuItems.length });
 
-        // Transform Firebase data to match our structure
+        // Transform Firebase data if available
         if (categories.length > 0 && menuItems.length > 0) {
           const transformedMenu = transformFirebaseDataToMenu(categories, menuItems);
           setMenu(transformedMenu);
           setDataLoaded(true);
+          console.log('Firebase menu loaded successfully');
+        } else {
+          console.log('Using fallback menu data');
         }
 
-        // FORCE USE FALLBACK DATA FOR NAME AND TAGLINES
-        // This ensures your new restaurant name and taglines are always used
+        // Update restaurant info with Firebase data (keeping fallback name/taglines)
         setRestaurantInfo({
-          name: fallbackRestaurantInfo.name, // Always use "Testy sizzler"
-          tagline: fallbackRestaurantInfo.tagline, // Always use "Mexican restaurant"
-          tagline2: fallbackRestaurantInfo.tagline2, // Always use "Mexican restaurant"
+          name: fallbackRestaurantInfo.name,
+          tagline: fallbackRestaurantInfo.tagline,
+          tagline2: fallbackRestaurantInfo.tagline2,
           phone: (restaurantData?.phone) || fallbackRestaurantInfo.phone,
           address: (restaurantData?.address) || fallbackRestaurantInfo.address,
           logo: (restaurantData?.logo) || fallbackRestaurantInfo.logo,
@@ -111,18 +196,18 @@ function App() {
         });
 
       } catch (error) {
-        console.error('Error loading Firebase data:', error);
-        // Keep fallback data if Firebase fails
-        setRestaurantInfo(fallbackRestaurantInfo);
+        console.log('Using fallback data due to Firebase error:', error.message);
+        // Fallback data is already set, no need to do anything
       } finally {
-        // Simulate loading time for better UX
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1500);
+        // Remove artificial delay - load immediately
+        setIsLoading(false);
       }
     };
 
-    loadFirebaseData();
+    // Small delay to show loading spinner briefly
+    setTimeout(() => {
+      loadFirebaseData();
+    }, 300);
   }, [RESTAURANT_ID]);
 
   // Filter menu based on search query

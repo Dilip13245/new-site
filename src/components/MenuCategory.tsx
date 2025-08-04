@@ -29,96 +29,178 @@ interface MenuCategoryProps {
 }
 
 const CategorySection = styled.section`
-  margin-bottom: ${theme.spacing['3xl']};
+  margin-bottom: ${theme.spacing['4xl']};
 `;
 
 const CategoryHeader = styled(motion.div)`
-  background: ${theme.colors.surface};
-  border-left: 4px solid ${theme.colors.primary};
-  margin-bottom: ${theme.spacing.lg};
-  box-shadow: ${theme.shadows.sm};
-  border-radius: 0 ${theme.borderRadius.md} ${theme.borderRadius.md} 0;
+  background: linear-gradient(135deg, ${theme.colors.surface} 0%, ${theme.colors.backgroundAlt} 100%);
+  border-radius: ${theme.borderRadius.xl};
+  margin-bottom: ${theme.spacing.xl};
+  box-shadow: ${theme.shadows.md};
+  border: 1px solid ${theme.colors.border};
+  overflow: hidden;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: ${theme.gradients.primary};
+  }
 `;
 
 const CategoryHeaderContent = styled(Container)`
-  padding: ${theme.spacing.lg};
+  padding: ${theme.spacing['2xl']};
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.xl};
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    padding: ${theme.spacing.xl};
+    gap: ${theme.spacing.lg};
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 const CategoryIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 50px;
-  height: 50px;
+  min-width: 80px;
+  height: 80px;
+  background: ${theme.gradients.primary};
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: ${theme.shadows.lg};
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: ${theme.transitions.slow};
+  }
+  
+  &:hover::before {
+    animation: shimmer 1.5s ease-in-out;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  }
 `;
 
 const CategoryImage = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: ${theme.borderRadius.md};
+  width: 70px;
+  height: 70px;
+  border-radius: ${theme.borderRadius.lg};
   object-fit: cover;
-  border: 2px solid ${theme.colors.primary};
+  border: 3px solid rgba(255, 255, 255, 0.2);
 `;
 
 const CategoryIcon = styled.span`
-  font-size: ${theme.fontSizes['2xl']};
-  min-width: 50px;
-  text-align: center;
+  font-size: ${theme.fontSizes['3xl']};
+  color: ${theme.colors.white};
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const CategoryInfo = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
 `;
 
 const CategoryTitle = styled.h2`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes['2xl']};
+  font-size: ${theme.fontSizes['3xl']};
   font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
-  margin: 0 0 ${theme.spacing.xs} 0;
+  margin: 0;
+  line-height: 1.1;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes['2xl']};
+  }
 `;
 
-const CategoryMeta = styled.div`
+const CategoryDescription = styled.p`
+  font-size: ${theme.fontSizes.lg};
+  color: ${theme.colors.textLight};
+  margin: 0;
+  line-height: 1.5;
+`;
+
+const CategoryStats = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.lg};
-  font-size: ${theme.fontSizes.sm};
-  color: ${theme.colors.textLight};
   flex-wrap: wrap;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    justify-content: center;
+  }
 `;
 
-const CategoryStat = styled.span`
+const StatBadge = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
+  gap: ${theme.spacing.sm};
+  background: ${theme.colors.surface};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.full};
+  font-size: ${theme.fontSizes.sm};
   font-weight: ${theme.fontWeights.medium};
+  color: ${theme.colors.textLight};
+  border: 1px solid ${theme.colors.border};
+  box-shadow: ${theme.shadows.sm};
 `;
 
-const ItemsList = styled.div`
-  background: ${theme.colors.surface};
-  border-radius: ${theme.borderRadius.lg};
-  overflow: hidden;
-  box-shadow: ${theme.shadows.sm};
-  border: 1px solid ${theme.colors.border};
+const ItemsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${theme.spacing.lg};
+  
+  @media (min-width: ${theme.breakpoints.md}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: ${theme.breakpoints.xl}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const EmptyState = styled(motion.div)`
   text-align: center;
-  padding: ${theme.spacing['2xl']} ${theme.spacing.lg};
-  color: ${theme.colors.textMuted};
+  padding: ${theme.spacing['3xl']} ${theme.spacing.lg};
   background: ${theme.colors.surface};
-  border-radius: ${theme.borderRadius.lg};
-  margin: ${theme.spacing.lg} 0;
+  border-radius: ${theme.borderRadius.xl};
+  margin: ${theme.spacing.xl} 0;
   border: 1px solid ${theme.colors.border};
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const EmptyIcon = styled.div`
-  font-size: ${theme.fontSizes['2xl']};
-  margin-bottom: ${theme.spacing.md};
+  font-size: ${theme.fontSizes['4xl']};
+  margin-bottom: ${theme.spacing.lg};
   opacity: 0.5;
+`;
+
+const EmptyTitle = styled.h3`
+  font-family: ${theme.fonts.heading};
+  font-size: ${theme.fontSizes.xl};
+  color: ${theme.colors.textLight};
+  margin: 0 0 ${theme.spacing.sm} 0;
 `;
 
 const EmptyText = styled.p`
@@ -165,10 +247,10 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
       <CategorySection id={category.id} className="category-section">
         <Container>
           <CategoryHeader
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: animationDelay }}
+            transition={{ duration: 0.6, delay: animationDelay }}
           >
             <CategoryHeaderContent>
               <CategoryIconContainer>
@@ -176,24 +258,28 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
               </CategoryIconContainer>
               <CategoryInfo>
                 <CategoryTitle>{category.name}</CategoryTitle>
-                <CategoryMeta>
-                  <CategoryStat>
+                {category.description && (
+                  <CategoryDescription>{category.description}</CategoryDescription>
+                )}
+                <CategoryStats>
+                  <StatBadge>
                     <span>📋</span>
                     <span>0 items</span>
-                  </CategoryStat>
-                </CategoryMeta>
+                  </StatBadge>
+                </CategoryStats>
               </CategoryInfo>
             </CategoryHeaderContent>
           </CategoryHeader>
 
           <EmptyState
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: animationDelay + 0.1 }}
+            transition={{ duration: 0.5, delay: animationDelay + 0.2 }}
           >
             <EmptyIcon>🍽️</EmptyIcon>
-            <EmptyText>No items available in this category</EmptyText>
+            <EmptyTitle>Coming Soon</EmptyTitle>
+            <EmptyText>No items available in this category yet</EmptyText>
           </EmptyState>
         </Container>
       </CategorySection>
@@ -204,10 +290,10 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
     <CategorySection id={category.id} className="category-section">
       <Container>
         <CategoryHeader
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: animationDelay }}
+          transition={{ duration: 0.6, delay: animationDelay }}
         >
           <CategoryHeaderContent>
             <CategoryIconContainer>
@@ -221,44 +307,47 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
             </CategoryIconContainer>
             <CategoryInfo>
               <CategoryTitle>{category.name}</CategoryTitle>
-              <CategoryMeta>
-                <CategoryStat>
+              {category.description && (
+                <CategoryDescription>{category.description}</CategoryDescription>
+              )}
+              <CategoryStats>
+                <StatBadge>
                   <span>📋</span>
                   <span>{category.items.length} items</span>
-                </CategoryStat>
+                </StatBadge>
                 
                 {vegCount > 0 && (
-                  <CategoryStat>
+                  <StatBadge>
                     <span>🥬</span>
                     <span>{vegCount} veg</span>
-                  </CategoryStat>
+                  </StatBadge>
                 )}
                 
                 {nonVegCount > 0 && (
-                  <CategoryStat>
+                  <StatBadge>
                     <span>🍖</span>
                     <span>{nonVegCount} non-veg</span>
-                  </CategoryStat>
+                  </StatBadge>
                 )}
                 
                 {popularCount > 0 && (
-                  <CategoryStat>
+                  <StatBadge>
                     <span>⭐</span>
                     <span>{popularCount} popular</span>
-                  </CategoryStat>
+                  </StatBadge>
                 )}
-              </CategoryMeta>
+              </CategoryStats>
             </CategoryInfo>
           </CategoryHeaderContent>
         </CategoryHeader>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: animationDelay + 0.1 }}
+          transition={{ duration: 0.8, delay: animationDelay + 0.3 }}
         >
-          <ItemsList>
+          <ItemsGrid>
             {category.items.map((item, index) => (
               <MenuItemCard
                 key={item.id}
@@ -266,7 +355,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ category, animationDelay = 
                 index={index}
               />
             ))}
-          </ItemsList>
+          </ItemsGrid>
         </motion.div>
       </Container>
     </CategorySection>

@@ -135,7 +135,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ restaurantName = 'Resta
           <ProgressFill
             initial={{ width: 0 }}
             animate={{ width: "100%" }}
-            transition={{ duration: 2, delay: 0.8, ease: "easeInOut" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
           />
         </ProgressBar>
       </LoadingContent>

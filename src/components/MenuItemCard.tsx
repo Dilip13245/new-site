@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { theme } from '../styles/theme';
+import { Star, Clock, Heart, Plus } from 'lucide-react';
 
 interface MenuItemProps {
   item: {
@@ -19,31 +20,34 @@ interface MenuItemProps {
   index: number;
 }
 
-const ItemContainer = styled(motion.div)`
-  display: flex;
-  gap: ${theme.spacing.lg};
-  padding: ${theme.spacing.lg};
+const ItemCard = styled(motion.div)`
   background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius.xl};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.sm};
+  border: 1px solid ${theme.colors.border};
   transition: ${theme.transitions.normal};
   position: relative;
-  border-bottom: 1px solid ${theme.colors.border};
+  cursor: pointer;
   
   &:hover {
-    background: ${theme.colors.backgroundAlt};
-    transform: translateY(-1px);
-    box-shadow: ${theme.shadows.sm};
-  }
-  
-  &:last-child {
-    border-bottom: none;
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.lg};
+    border-color: ${theme.colors.primary};
   }
 `;
 
+const ItemImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: ${theme.colors.backgroundLight};
+`;
+
 const ItemImage = styled.div<{ backgroundImage?: string }>`
-  width: 80px;
-  height: 80px;
-  min-width: 80px;
-  border-radius: ${theme.borderRadius.lg};
+  width: 100%;
+  height: 100%;
   background: ${props => props.backgroundImage 
     ? `url(${props.backgroundImage})` 
     : theme.colors.backgroundLight};
@@ -52,84 +56,156 @@ const ItemImage = styled.div<{ backgroundImage?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${theme.fontSizes.xl};
+  font-size: ${theme.fontSizes['3xl']};
   color: ${theme.colors.textMuted};
+  position: relative;
+  transition: ${theme.transitions.normal};
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+  }
+  
+  ${ItemCard}:hover & {
+    transform: scale(1.05);
+  }
+`;
+
+const ItemBadges = styled.div`
+  position: absolute;
+  top: ${theme.spacing.md};
+  left: ${theme.spacing.md};
+  display: flex;
+  gap: ${theme.spacing.sm};
+  z-index: 2;
+`;
+
+const Badge = styled.div<{ variant: 'veg' | 'popular' | 'nonveg' }>`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.full};
+  font-size: ${theme.fontSizes.xs};
+  font-weight: ${theme.fontWeights.bold};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
+  
+  ${props => {
+    switch (props.variant) {
+      case 'veg':
+        return `
+          background: rgba(34, 197, 94, 0.9);
+          color: ${theme.colors.white};
+          border: 1px solid rgba(34, 197, 94, 0.3);
+        `;
+      case 'popular':
+        return `
+          background: rgba(245, 158, 11, 0.9);
+          color: ${theme.colors.white};
+          border: 1px solid rgba(245, 158, 11, 0.3);
+        `;
+      case 'nonveg':
+        return `
+          background: rgba(239, 68, 68, 0.9);
+          color: ${theme.colors.white};
+          border: 1px solid rgba(239, 68, 68, 0.3);
+        `;
+      default:
+        return '';
+    }
+  }}
+`;
+
+const ItemActions = styled.div`
+  position: absolute;
+  top: ${theme.spacing.md};
+  right: ${theme.spacing.md};
+  display: flex;
+  gap: ${theme.spacing.sm};
+  z-index: 2;
+`;
+
+const ActionButton = styled(motion.button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   border: 1px solid ${theme.colors.border};
+  border-radius: ${theme.borderRadius.full};
+  color: ${theme.colors.textLight};
+  cursor: pointer;
+  transition: ${theme.transitions.fast};
+  
+  &:hover {
+    background: ${theme.colors.primary};
+    color: ${theme.colors.white};
+    transform: scale(1.1);
+  }
 `;
 
 const ItemContent = styled.div`
-  flex: 1;
+  padding: ${theme.spacing.lg};
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 80px;
+  gap: ${theme.spacing.md};
 `;
 
 const ItemHeader = styled.div`
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: ${theme.spacing.md};
-  margin-bottom: ${theme.spacing.xs};
+  flex-direction: column;
+  gap: ${theme.spacing.sm};
 `;
 
 const ItemName = styled.h3`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.lg};
-  font-weight: ${theme.fontWeights.medium};
+  font-size: ${theme.fontSizes.xl};
+  font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
   margin: 0;
-  line-height: 1.3;
-  flex: 1;
-`;
-
-const ItemBadges = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  flex-shrink: 0;
-`;
-
-const VegBadge = styled.div<{ isVeg: boolean }>`
-  width: 16px;
-  height: 16px;
-  border: 2px solid ${props => props.isVeg ? theme.colors.success : theme.colors.error};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border-radius: 2px;
-  background: ${theme.colors.surface};
-  
-  &::after {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: ${props => props.isVeg ? theme.colors.success : theme.colors.error};
-    border-radius: 50%;
-  }
-`;
-
-const PopularBadge = styled.span`
-  background: ${theme.colors.warning};
-  color: ${theme.colors.white};
-  font-size: ${theme.fontSizes.xs};
-  padding: 2px 6px;
-  border-radius: ${theme.borderRadius.sm};
-  font-weight: ${theme.fontWeights.semibold};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  line-height: 1.2;
 `;
 
 const ItemDescription = styled.p`
   font-size: ${theme.fontSizes.sm};
   color: ${theme.colors.textLight};
   line-height: 1.5;
-  margin: 0 0 ${theme.spacing.sm} 0;
+  margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+`;
+
+const ItemMeta = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${theme.spacing.md};
+`;
+
+const MetaGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+`;
+
+const MetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  font-size: ${theme.fontSizes.sm};
+  color: ${theme.colors.textMuted};
+  font-weight: ${theme.fontWeights.medium};
 `;
 
 const ItemFooter = styled.div`
@@ -137,114 +213,141 @@ const ItemFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${theme.spacing.md};
+  padding-top: ${theme.spacing.md};
+  border-top: 1px solid ${theme.colors.border};
 `;
 
-const ItemMeta = styled.div`
+const PriceGroup = styled.div`
   display: flex;
-  align-items: center;
-  gap: ${theme.spacing.md};
-  font-size: ${theme.fontSizes.xs};
-  color: ${theme.colors.textMuted};
-`;
-
-const ItemRating = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  background: rgba(255, 193, 7, 0.1);
-  padding: 2px 6px;
-  border-radius: ${theme.borderRadius.sm};
-  border: 1px solid rgba(255, 193, 7, 0.2);
-`;
-
-const ItemPrepTime = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  background: rgba(56, 161, 105, 0.1);
-  padding: 2px 6px;
-  border-radius: ${theme.borderRadius.sm};
-  border: 1px solid rgba(56, 161, 105, 0.2);
-`;
-
-const ItemPricing = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
   flex-direction: column;
-  align-items: flex-end;
+  gap: ${theme.spacing.xs};
 `;
 
 const ItemPrice = styled.span`
   font-family: ${theme.fonts.heading};
-  font-size: ${theme.fontSizes.xl};
-  font-weight: ${theme.fontWeights.semibold};
+  font-size: ${theme.fontSizes['2xl']};
+  font-weight: ${theme.fontWeights.bold};
   color: ${theme.colors.primary};
 `;
 
 const ItemOriginalPrice = styled.span`
-  font-size: ${theme.fontSizes.sm};
+  font-size: ${theme.fontSizes.base};
   color: ${theme.colors.textMuted};
   text-decoration: line-through;
   font-weight: ${theme.fontWeights.normal};
 `;
 
+const AddButton = styled(motion.button)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  border: none;
+  border-radius: ${theme.borderRadius.lg};
+  font-family: ${theme.fonts.body};
+  font-size: ${theme.fontSizes.sm};
+  font-weight: ${theme.fontWeights.semibold};
+  cursor: pointer;
+  transition: ${theme.transitions.fast};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: scale(1.05);
+  }
+`;
+
 const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
   return (
-    <ItemContainer
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-20px' }}
+    <ItemCard
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
       transition={{ 
-        duration: 0.4, 
-        delay: index * 0.05,
+        duration: 0.6, 
+        delay: index * 0.1,
         ease: 'easeOut'
       }}
+      whileHover={{ scale: 1.02 }}
     >
-      <ItemImage backgroundImage={item.image}>
-        {!item.image && '🍽️'}
-      </ItemImage>
+      <ItemImageContainer>
+        <ItemImage backgroundImage={item.image}>
+          {!item.image && '🍽️'}
+        </ItemImage>
+        
+        <ItemBadges>
+          {item.isVeg ? (
+            <Badge variant="veg">
+              🥬 Veg
+            </Badge>
+          ) : (
+            <Badge variant="nonveg">
+              🍖 Non-Veg
+            </Badge>
+          )}
+          {item.isPopular && (
+            <Badge variant="popular">
+              ⭐ Popular
+            </Badge>
+          )}
+        </ItemBadges>
+        
+        <ItemActions>
+          <ActionButton
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Heart size={16} />
+          </ActionButton>
+        </ItemActions>
+      </ItemImageContainer>
 
       <ItemContent>
-        <div>
-          <ItemHeader>
-            <ItemName>{item.name}</ItemName>
-            <ItemBadges>
-              <VegBadge isVeg={item.isVeg} />
-              {item.isPopular && <PopularBadge>★</PopularBadge>}
-            </ItemBadges>
-          </ItemHeader>
-
+        <ItemHeader>
+          <ItemName>{item.name}</ItemName>
           {item.description && (
             <ItemDescription>{item.description}</ItemDescription>
           )}
-        </div>
+        </ItemHeader>
 
-        <ItemFooter>
-          <ItemMeta>
+        <ItemMeta>
+          <MetaGroup>
             {item.rating && (
-              <ItemRating>
-                <span>⭐</span>
+              <MetaItem>
+                <Star size={16} fill="currentColor" />
                 <span>{item.rating}</span>
-              </ItemRating>
+              </MetaItem>
             )}
             {item.prepTime && (
-              <ItemPrepTime>
-                <span>🕐</span>
+              <MetaItem>
+                <Clock size={16} />
                 <span>{item.prepTime}</span>
-              </ItemPrepTime>
+              </MetaItem>
             )}
-          </ItemMeta>
+          </MetaGroup>
+        </ItemMeta>
 
-          <ItemPricing>
+        <ItemFooter>
+          <PriceGroup>
             <ItemPrice>{item.price}</ItemPrice>
             {item.originalPrice && (
               <ItemOriginalPrice>{item.originalPrice}</ItemOriginalPrice>
             )}
-          </ItemPricing>
+          </PriceGroup>
+          
+          <AddButton
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Plus size={16} />
+            Add
+          </AddButton>
         </ItemFooter>
       </ItemContent>
-    </ItemContainer>
+    </ItemCard>
   );
 };
 

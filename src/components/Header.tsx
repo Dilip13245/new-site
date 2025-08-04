@@ -38,44 +38,72 @@ const HeaderContainer = styled(motion.header)<{ isScrolled: boolean }>`
 `;
 
 const HeaderContent = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.lg};
+  padding: 0 ${theme.spacing.xl};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.xl};
+  min-height: 80px;
+
+  @media (max-width: ${theme.breakpoints.lg}) {
+    padding: 0 ${theme.spacing.lg};
+    gap: ${theme.spacing.lg};
+  }
 `;
 
 const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.lg};
   flex-shrink: 0;
+  cursor: pointer;
+  transition: ${theme.transitions.fast};
+
+  &:hover {
+    transform: translateY(-1px);
+  }
 `;
 
 const LogoImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: ${theme.borderRadius.md};
+  width: 50px;
+  height: 50px;
+  border-radius: ${theme.borderRadius.lg};
   object-fit: cover;
+  box-shadow: ${theme.shadows.sm};
+  border: 2px solid ${theme.colors.primary};
+
+  @media (min-width: ${theme.breakpoints.lg}) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const LogoText = styled.div`
   h1 {
     font-family: ${theme.fonts.heading};
-    font-size: ${theme.fontSizes.xl};
+    font-size: ${theme.fontSizes['2xl']};
     font-weight: ${theme.fontWeights.semibold};
     color: ${theme.colors.text};
     margin: 0;
     line-height: 1;
+
+    @media (min-width: ${theme.breakpoints.lg}) {
+      font-size: ${theme.fontSizes['3xl']};
+    }
   }
 
   p {
-    font-size: ${theme.fontSizes.sm};
+    font-size: ${theme.fontSizes.base};
     color: ${theme.colors.textMuted};
     margin: 0;
     line-height: 1;
+    margin-top: ${theme.spacing.xs};
+
+    @media (min-width: ${theme.breakpoints.lg}) {
+      font-size: ${theme.fontSizes.lg};
+    }
   }
 `;
 
@@ -85,7 +113,12 @@ const Navigation = styled.nav`
   @media (min-width: ${theme.breakpoints.lg}) {
     display: flex;
     align-items: center;
-    gap: ${theme.spacing.xs};
+    gap: ${theme.spacing.md};
+    background: ${theme.colors.backgroundAlt};
+    padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: ${theme.shadows.sm};
+    border: 1px solid ${theme.colors.border};
   }
 `;
 
@@ -99,20 +132,23 @@ const NavLink = styled(motion.button)<{ isActive: boolean }>`
     : theme.colors.text
   };
   border: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
   font-family: ${theme.fonts.body};
-  font-size: ${theme.fontSizes.sm};
+  font-size: ${theme.fontSizes.base};
   font-weight: ${theme.fontWeights.medium};
   cursor: pointer;
   transition: ${theme.transitions.fast};
   white-space: nowrap;
+  position: relative;
 
   &:hover {
     background: ${props => props.isActive 
       ? theme.colors.primary 
-      : theme.colors.backgroundAlt
+      : theme.colors.surface
     };
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.sm};
   }
 `;
 
