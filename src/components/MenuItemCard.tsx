@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { theme } from '../styles/theme';
-import { Star, Clock, Heart, Plus } from 'lucide-react';
+import { Star, Clock, Plus, Minus } from 'lucide-react';
 
 interface MenuItemProps {
   item: {
@@ -20,27 +20,47 @@ interface MenuItemProps {
   index: number;
 }
 
-const ItemCard = styled(motion.div)`
+const ItemContainer = styled(motion.div)`
+  display: flex;
+  gap: ${theme.spacing.lg};
+  padding: ${theme.spacing.xl};
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius.xl};
-  overflow: hidden;
-  box-shadow: ${theme.shadows.sm};
   border: 1px solid ${theme.colors.border};
   transition: ${theme.transitions.normal};
   position: relative;
-  cursor: pointer;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: ${theme.colors.primary};
+    transform: scaleY(0);
+    transition: ${theme.transitions.normal};
+    transform-origin: bottom;
+  }
   
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.lg};
     border-color: ${theme.colors.primary};
+    
+    &::before {
+      transform: scaleY(1);
+    }
   }
 `;
 
 const ItemImageContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 200px;
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  border-radius: ${theme.borderRadius.xl};
   overflow: hidden;
   background: ${theme.colors.backgroundLight};
 `;
@@ -56,7 +76,7 @@ const ItemImage = styled.div<{ backgroundImage?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${theme.fontSizes['3xl']};
+  font-size: ${theme.fontSizes['2xl']};
   color: ${theme.colors.textMuted};
   position: relative;
   transition: ${theme.transitions.normal};
@@ -68,34 +88,35 @@ const ItemImage = styled.div<{ backgroundImage?: string }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+    background: linear-gradient(135deg, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
   }
   
-  ${ItemCard}:hover & {
+  ${ItemContainer}:hover & {
     transform: scale(1.05);
   }
 `;
 
 const ItemBadges = styled.div`
   position: absolute;
-  top: ${theme.spacing.md};
-  left: ${theme.spacing.md};
+  top: ${theme.spacing.sm};
+  left: ${theme.spacing.sm};
   display: flex;
-  gap: ${theme.spacing.sm};
+  flex-direction: column;
+  gap: ${theme.spacing.xs};
   z-index: 2;
 `;
 
 const Badge = styled.div<{ variant: 'veg' | 'popular' | 'nonveg' }>`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   border-radius: ${theme.borderRadius.full};
-  font-size: ${theme.fontSizes.xs};
+  font-size: ${theme.fontSizes.sm};
   font-weight: ${theme.fontWeights.bold};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   
   ${props => {
     switch (props.variant) {
@@ -103,19 +124,16 @@ const Badge = styled.div<{ variant: 'veg' | 'popular' | 'nonveg' }>`
         return `
           background: rgba(34, 197, 94, 0.9);
           color: ${theme.colors.white};
-          border: 1px solid rgba(34, 197, 94, 0.3);
         `;
       case 'popular':
         return `
           background: rgba(245, 158, 11, 0.9);
           color: ${theme.colors.white};
-          border: 1px solid rgba(245, 158, 11, 0.3);
         `;
       case 'nonveg':
         return `
           background: rgba(239, 68, 68, 0.9);
           color: ${theme.colors.white};
-          border: 1px solid rgba(239, 68, 68, 0.3);
         `;
       default:
         return '';
@@ -123,40 +141,11 @@ const Badge = styled.div<{ variant: 'veg' | 'popular' | 'nonveg' }>`
   }}
 `;
 
-const ItemActions = styled.div`
-  position: absolute;
-  top: ${theme.spacing.md};
-  right: ${theme.spacing.md};
-  display: flex;
-  gap: ${theme.spacing.sm};
-  z-index: 2;
-`;
-
-const ActionButton = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.full};
-  color: ${theme.colors.textLight};
-  cursor: pointer;
-  transition: ${theme.transitions.fast};
-  
-  &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
-    transform: scale(1.1);
-  }
-`;
-
 const ItemContent = styled.div`
-  padding: ${theme.spacing.lg};
+  flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: ${theme.spacing.md};
 `;
 
@@ -172,7 +161,11 @@ const ItemName = styled.h3`
   font-weight: ${theme.fontWeights.semibold};
   color: ${theme.colors.text};
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const ItemDescription = styled.p`
@@ -189,14 +182,8 @@ const ItemDescription = styled.p`
 const ItemMeta = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: ${theme.spacing.md};
-`;
-
-const MetaGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.lg};
+  margin: ${theme.spacing.sm} 0;
 `;
 
 const MetaItem = styled.div`
@@ -206,18 +193,20 @@ const MetaItem = styled.div`
   font-size: ${theme.fontSizes.sm};
   color: ${theme.colors.textMuted};
   font-weight: ${theme.fontWeights.medium};
+  
+  svg {
+    color: ${theme.colors.primary};
+  }
 `;
 
 const ItemFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${theme.spacing.md};
-  padding-top: ${theme.spacing.md};
-  border-top: 1px solid ${theme.colors.border};
+  gap: ${theme.spacing.lg};
 `;
 
-const PriceGroup = styled.div`
+const PriceSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.xs};
@@ -235,6 +224,46 @@ const ItemOriginalPrice = styled.span`
   color: ${theme.colors.textMuted};
   text-decoration: line-through;
   font-weight: ${theme.fontWeights.normal};
+`;
+
+const QuantityControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+`;
+
+const QuantityButton = styled(motion.button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: ${theme.colors.backgroundAlt};
+  border: 1px solid ${theme.colors.border};
+  border-radius: ${theme.borderRadius.md};
+  color: ${theme.colors.text};
+  cursor: pointer;
+  transition: ${theme.transitions.fast};
+  
+  &:hover {
+    background: ${theme.colors.primary};
+    color: ${theme.colors.white};
+    border-color: ${theme.colors.primary};
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const QuantityDisplay = styled.span`
+  font-family: ${theme.fonts.heading};
+  font-size: ${theme.fontSizes.lg};
+  font-weight: ${theme.fontWeights.semibold};
+  color: ${theme.colors.text};
+  min-width: 24px;
+  text-align: center;
 `;
 
 const AddButton = styled(motion.button)`
@@ -261,17 +290,30 @@ const AddButton = styled(motion.button)`
 `;
 
 const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
+  const [quantity, setQuantity] = React.useState(0);
+
+  const handleAddToCart = () => {
+    setQuantity(1);
+  };
+
+  const handleIncrement = () => {
+    setQuantity(prev => prev + 1);
+  };
+
+  const handleDecrement = () => {
+    setQuantity(prev => Math.max(0, prev - 1));
+  };
+
   return (
-    <ItemCard
-      initial={{ opacity: 0, y: 30 }}
+    <ItemContainer
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ 
-        duration: 0.6, 
+        duration: 0.5, 
         delay: index * 0.1,
         ease: 'easeOut'
       }}
-      whileHover={{ scale: 1.02 }}
     >
       <ItemImageContainer>
         <ItemImage backgroundImage={item.image}>
@@ -280,29 +322,20 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
         
         <ItemBadges>
           {item.isVeg ? (
-            <Badge variant="veg">
-              🥬 Veg
+            <Badge variant="veg" title="Vegetarian">
+              🥬
             </Badge>
           ) : (
-            <Badge variant="nonveg">
-              🍖 Non-Veg
+            <Badge variant="nonveg" title="Non-Vegetarian">
+              🍖
             </Badge>
           )}
           {item.isPopular && (
-            <Badge variant="popular">
-              ⭐ Popular
+            <Badge variant="popular" title="Popular">
+              ⭐
             </Badge>
           )}
         </ItemBadges>
-        
-        <ItemActions>
-          <ActionButton
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Heart size={16} />
-          </ActionButton>
-        </ItemActions>
       </ItemImageContainer>
 
       <ItemContent>
@@ -313,8 +346,8 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
           )}
         </ItemHeader>
 
-        <ItemMeta>
-          <MetaGroup>
+        {(item.rating || item.prepTime) && (
+          <ItemMeta>
             {item.rating && (
               <MetaItem>
                 <Star size={16} fill="currentColor" />
@@ -327,27 +360,48 @@ const MenuItemCard: React.FC<MenuItemProps> = ({ item, index }) => {
                 <span>{item.prepTime}</span>
               </MetaItem>
             )}
-          </MetaGroup>
-        </ItemMeta>
+          </ItemMeta>
+        )}
 
         <ItemFooter>
-          <PriceGroup>
+          <PriceSection>
             <ItemPrice>{item.price}</ItemPrice>
             {item.originalPrice && (
               <ItemOriginalPrice>{item.originalPrice}</ItemOriginalPrice>
             )}
-          </PriceGroup>
+          </PriceSection>
           
-          <AddButton
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Plus size={16} />
-            Add
-          </AddButton>
+          {quantity === 0 ? (
+            <AddButton
+              onClick={handleAddToCart}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus size={16} />
+              Add
+            </AddButton>
+          ) : (
+            <QuantityControls>
+              <QuantityButton
+                onClick={handleDecrement}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Minus size={16} />
+              </QuantityButton>
+              <QuantityDisplay>{quantity}</QuantityDisplay>
+              <QuantityButton
+                onClick={handleIncrement}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Plus size={16} />
+              </QuantityButton>
+            </QuantityControls>
+          )}
         </ItemFooter>
       </ItemContent>
-    </ItemCard>
+    </ItemContainer>
   );
 };
 

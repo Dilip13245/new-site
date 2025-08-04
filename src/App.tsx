@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 
 // Components
 import Header from './components/Header';
-import HeroSection from './components/HeroSection';
+import Sidebar from './components/Sidebar';
 import SearchSection from './components/SearchSection';
 import MenuCategory from './components/MenuCategory';
 import Footer from './components/Footer';
@@ -53,6 +54,36 @@ interface RestaurantInfo {
   phone?: string;
   address?: string;
 }
+
+// Styled Components
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const LayoutContainer = styled.div`
+  display: flex;
+  flex: 1;
+  padding-top: 80px;
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  margin-left: 350px;
+  
+  @media (max-width: ${theme.breakpoints.lg}) {
+    margin-left: 0;
+  }
+`;
+
+const MenuContainer = styled(motion.div)`
+  padding: ${theme.spacing.xl};
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    padding: ${theme.spacing.lg};
+  }
+`;
 
 // Fallback restaurant info
 const fallbackRestaurantInfo: RestaurantInfo = {
@@ -268,59 +299,65 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
 
-      <div className="app">
+      <AppContainer>
         <Header
           restaurantInfo={restaurantInfo}
           categories={menu}
           activeCategory={activeCategory}
         />
 
-        <main>
-          <HeroSection restaurantInfo={restaurantInfo} />
-
-          <SearchSection
-            onSearch={handleSearch}
-            searchQuery={searchQuery}
+        <LayoutContainer>
+          <Sidebar
+            restaurantInfo={restaurantInfo}
+            categories={menu}
+            activeCategory={activeCategory}
           />
 
-          <motion.div
-            className="menu-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <AnimatePresence mode="wait">
-              {filteredMenu.map((category, index) => (
-                category.items.length > 0 && (
-                  <MenuCategory
-                    key={`${category.id}-${searchQuery}`}
-                    category={category}
-                    animationDelay={index * 0.1}
-                  />
-                )
-              ))}
-            </AnimatePresence>
+          <MainContent>
+            <SearchSection
+              onSearch={handleSearch}
+              searchQuery={searchQuery}
+            />
 
-            {filteredMenu.length === 0 && searchQuery && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{
-                  textAlign: 'center',
-                  padding: '4rem 1rem',
-                  color: theme.colors.textMuted
-                }}
-              >
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
-                <h3>No items found</h3>
-                <p>No dishes match "{searchQuery}". Try a different search term.</p>
-              </motion.div>
-            )}
-          </motion.div>
-        </main>
+            <MenuContainer
+              className="menu-container"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <AnimatePresence mode="wait">
+                {filteredMenu.map((category, index) => (
+                  category.items.length > 0 && (
+                    <MenuCategory
+                      key={`${category.id}-${searchQuery}`}
+                      category={category}
+                      animationDelay={index * 0.1}
+                    />
+                  )
+                ))}
+              </AnimatePresence>
 
-        <Footer restaurantInfo={restaurantInfo} />
-      </div>
+              {filteredMenu.length === 0 && searchQuery && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{
+                    textAlign: 'center',
+                    padding: '4rem 1rem',
+                    color: theme.colors.textMuted
+                  }}
+                >
+                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+                  <h3>No items found</h3>
+                  <p>No dishes match "{searchQuery}". Try a different search term.</p>
+                </motion.div>
+              )}
+            </MenuContainer>
+
+            <Footer restaurantInfo={restaurantInfo} />
+          </MainContent>
+        </LayoutContainer>
+      </AppContainer>
     </ThemeProvider>
   );
 }

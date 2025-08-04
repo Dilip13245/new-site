@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone, MapPin } from 'lucide-react';
 import { theme } from '../styles/theme';
 
 interface HeaderProps {
@@ -33,122 +33,80 @@ const HeaderContainer = styled(motion.header)<{ isScrolled: boolean }>`
   backdrop-filter: blur(8px);
   border-bottom: 1px solid ${theme.colors.border};
   transition: ${theme.transitions.normal};
-  padding: ${theme.spacing.md} 0;
   box-shadow: ${props => props.isScrolled ? theme.shadows.sm : 'none'};
 `;
 
 const HeaderContent = styled.div`
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.xl};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${theme.spacing.xl};
-  min-height: 80px;
-
-  @media (max-width: ${theme.breakpoints.lg}) {
-    padding: 0 ${theme.spacing.lg};
-    gap: ${theme.spacing.lg};
-  }
+  gap: ${theme.spacing.lg};
+  min-height: 60px;
 `;
 
 const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.md};
   flex-shrink: 0;
   cursor: pointer;
-  transition: ${theme.transitions.fast};
-
-  &:hover {
-    transform: translateY(-1px);
-  }
 `;
 
 const LogoImage = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: ${theme.borderRadius.lg};
+  width: 40px;
+  height: 40px;
+  border-radius: ${theme.borderRadius.md};
   object-fit: cover;
-  box-shadow: ${theme.shadows.sm};
-  border: 2px solid ${theme.colors.primary};
-
-  @media (min-width: ${theme.breakpoints.lg}) {
-    width: 60px;
-    height: 60px;
-  }
 `;
 
 const LogoText = styled.div`
   h1 {
     font-family: ${theme.fonts.heading};
-    font-size: ${theme.fontSizes['2xl']};
+    font-size: ${theme.fontSizes.xl};
     font-weight: ${theme.fontWeights.semibold};
     color: ${theme.colors.text};
     margin: 0;
     line-height: 1;
-
-    @media (min-width: ${theme.breakpoints.lg}) {
-      font-size: ${theme.fontSizes['3xl']};
-    }
   }
 
   p {
-    font-size: ${theme.fontSizes.base};
+    font-size: ${theme.fontSizes.sm};
     color: ${theme.colors.textMuted};
     margin: 0;
     line-height: 1;
-    margin-top: ${theme.spacing.xs};
-
-    @media (min-width: ${theme.breakpoints.lg}) {
-      font-size: ${theme.fontSizes.lg};
-    }
   }
 `;
 
-const Navigation = styled.nav`
+const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.lg};
+`;
+
+const ContactInfo = styled.div`
   display: none;
+  align-items: center;
+  gap: ${theme.spacing.lg};
 
-  @media (min-width: ${theme.breakpoints.lg}) {
+  @media (min-width: ${theme.breakpoints.md}) {
     display: flex;
-    align-items: center;
-    gap: ${theme.spacing.md};
-    background: ${theme.colors.backgroundAlt};
-    padding: ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.xl};
-    box-shadow: ${theme.shadows.sm};
-    border: 1px solid ${theme.colors.border};
   }
 `;
 
-const NavLink = styled(motion.button)<{ isActive: boolean }>`
-  background: ${props => props.isActive 
-    ? theme.colors.primary 
-    : 'transparent'
-  };
-  color: ${props => props.isActive 
-    ? theme.colors.white 
-    : theme.colors.text
-  };
-  border: none;
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  font-family: ${theme.fonts.body};
-  font-size: ${theme.fontSizes.base};
+const ContactItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  color: ${theme.colors.textLight};
+  font-size: ${theme.fontSizes.sm};
   font-weight: ${theme.fontWeights.medium};
-  cursor: pointer;
-  transition: ${theme.transitions.fast};
-  white-space: nowrap;
-  position: relative;
 
-  &:hover {
-    background: ${props => props.isActive 
-      ? theme.colors.primary 
-      : theme.colors.surface
-    };
-    transform: translateY(-1px);
-    box-shadow: ${theme.shadows.sm};
+  svg {
+    color: ${theme.colors.primary};
+    flex-shrink: 0;
   }
 `;
 
@@ -320,25 +278,28 @@ const Header: React.FC<HeaderProps> = ({
             </LogoText>
           </Logo>
 
-          <Navigation>
-            {categories.map((category) => (
-              <NavLink
-                key={category.id}
-                isActive={activeCategory === category.id}
-                onClick={() => scrollToCategory(category.id)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {category.name}
-              </NavLink>
-            ))}
-          </Navigation>
+          <HeaderActions>
+            <ContactInfo>
+              {restaurantInfo.phone && (
+                <ContactItem>
+                  <Phone size={16} />
+                  <span>{restaurantInfo.phone}</span>
+                </ContactItem>
+              )}
+              {restaurantInfo.address && (
+                <ContactItem>
+                  <MapPin size={16} />
+                  <span>Order Now</span>
+                </ContactItem>
+              )}
+            </ContactInfo>
 
-          <MobileMenuButton
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Menu size={18} />
-          </MobileMenuButton>
+            <MobileMenuButton
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu size={18} />
+            </MobileMenuButton>
+          </HeaderActions>
         </HeaderContent>
       </HeaderContainer>
 
